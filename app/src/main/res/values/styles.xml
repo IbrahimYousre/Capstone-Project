@@ -14,4 +14,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ColoredButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="WhiteButton" parent="Theme.AppCompat.Light">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
 </resources>
