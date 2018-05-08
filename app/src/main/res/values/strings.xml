@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Ask Me Anything</string>
+    <string name="welcome">Welcome</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="sign_up_with_email">Sign up with Email</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="authentication_error">Authentication failed.</string>
+    <string name="my_web_client_id">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
+    <string name="logout">Logout</string>
 </resources>
