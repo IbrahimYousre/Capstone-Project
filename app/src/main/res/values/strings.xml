@@ -10,4 +10,10 @@
     <string name="authentication_error">Authentication failed.</string>
     <string name="my_web_client_id">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
     <string name="logout">Logout</string>
+    <string name="sign_up">Sign up</string>
+    <string name="name">Name</string>
+    <string name="wrong_email_error">Wrong Email Address!</string>
+    <string name="short_password_error">Short Password!</string>
+    <string name="empty_name_error">Please enter you name</string>
+    <string name="account_creation_error">Couldn\'t create the account</string>
 </resources>

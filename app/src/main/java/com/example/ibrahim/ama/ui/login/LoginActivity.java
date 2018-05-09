@@ -1,24 +1,22 @@
 package com.example.ibrahim.ama.ui.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ibrahim.ama.MainActivity;
 import com.example.ibrahim.ama.R;
+import com.example.ibrahim.ama.ui.signup.SignUpActivity;
+import com.example.ibrahim.ama.util.ActivityUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,11 +30,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.ibrahim.ama.util.Constants.EMAIL_PATTERN;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String EMAIL_PATTERN =
-            "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     private static final int RC_GOOGLE_SIGN_IN = 101;
+    private static final int RC_SIGN_UP = 102;
 
     @BindView(R.id.email_txt)
     EditText emailEditText;
@@ -52,9 +51,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_btn)
     Button loginButton;
-
-    @BindView(R.id.google_btn)
-    SignInButton googleButton;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -88,13 +84,13 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isValidInput(String email, String password) {
         boolean valid = true;
         if (email.isEmpty() || !email.matches(EMAIL_PATTERN)) {
-            emailLayout.setError("Wrong Email Address!");
+            emailLayout.setError(getString(R.string.wrong_email_error));
             valid = false;
         } else {
             emailLayout.setErrorEnabled(false);
         }
         if (password.isEmpty() || password.length() < 5) {
-            passwordLayout.setError("Short Password!");
+            passwordLayout.setError(getString(R.string.short_password_error));
             valid = false;
         } else {
             passwordLayout.setErrorEnabled(false);
@@ -102,24 +98,22 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
     @OnClick(R.id.login_btn)
     void onLoginClicked() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
         if (isValidInput(email, password)) {
-            hideKeyboard();
+            ActivityUtils.hideKeyboard(this);
             loginButton.setEnabled(false);
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, authCompleteListener);
         }
+    }
+
+    @OnClick(R.id.signup_btn)
+    void onSignUpClicked() {
+        Intent signUpIntent = new Intent(this, SignUpActivity.class);
+        startActivityForResult(signUpIntent, RC_SIGN_UP);
     }
 
     @OnClick(R.id.google_btn)
@@ -140,6 +134,10 @@ public class LoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == RC_SIGN_UP && resultCode == RESULT_OK) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
