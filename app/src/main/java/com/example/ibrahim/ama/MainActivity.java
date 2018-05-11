@@ -2,10 +2,11 @@ package com.example.ibrahim.ama;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.ibrahim.ama.ui.login.LoginActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,8 +20,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.user_email)
-    TextView userEmailTextView;
+    @BindView(R.id.bottomNavigation)
+    BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        setupBottomNavigationView();
     }
 
     @Override
@@ -48,8 +51,31 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
-            userEmailTextView.setText(currentUser.getEmail());
+
         }
+    }
+
+    void setupBottomNavigationView() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.feed:
+
+                        break;
+                    case R.id.topics:
+
+                        break;
+                    case R.id.notifications:
+
+                        break;
+                    case R.id.profile:
+
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -66,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return true;
-        } else if(item.getItemId() == R.id.action_add_topic){
-            startActivity(new Intent(this,AddTopicActivity.class));
+        } else if (item.getItemId() == R.id.action_add_topic) {
+            startActivity(new Intent(this, AddTopicActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

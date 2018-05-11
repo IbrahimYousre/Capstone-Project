@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,9 +23,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden"
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/AppTheme.Login" />
+            android:theme="@style/AppTheme.Login"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.signup.SignUpActivity"
             android:theme="@style/AppTheme.Login" />
