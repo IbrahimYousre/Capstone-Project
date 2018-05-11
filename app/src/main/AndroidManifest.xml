@@ -23,7 +23,15 @@
             android:theme="@style/AppTheme.Login" />
         <activity
             android:name=".ui.signup.SignUpActivity"
-            android:theme="@style/AppTheme.Login"></activity>
+            android:theme="@style/AppTheme.Login" />
+        <activity
+            android:name=".AddTopicActivity"
+            android:label="@string/add_topic"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>
