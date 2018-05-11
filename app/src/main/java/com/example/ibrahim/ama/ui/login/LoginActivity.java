@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, authCompleteListener);
     }
 
-    private OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
+    private final OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
             if (task.isSuccessful()) {
