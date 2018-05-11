@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.logout, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
             mGoogleSignInClient.signOut();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+            return true;
+        } else if(item.getItemId() == R.id.action_add_topic){
+            startActivity(new Intent(this,AddTopicActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

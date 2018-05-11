@@ -16,4 +16,8 @@
     <string name="short_password_error">Short Password!</string>
     <string name="empty_name_error">Please enter you name</string>
     <string name="account_creation_error">Couldn\'t create the account</string>
+    <string name="topic_name">Topic Name</string>
+    <string name="add_topic">Add Topic</string>
+    <string name="topic_add_error">Failed to add topic</string>
+    <string name="topic_add_message">Topic added successfully</string>
 </resources>
