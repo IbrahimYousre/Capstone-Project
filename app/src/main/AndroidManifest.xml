@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.Login" />
         <activity
