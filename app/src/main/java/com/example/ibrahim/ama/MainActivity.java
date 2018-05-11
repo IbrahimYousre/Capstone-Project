@@ -3,6 +3,7 @@ package com.example.ibrahim.ama;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         } else {
             userEmailTextView.setText(currentUser.getEmail());
+            if (currentUser.getPhotoUrl() != null)
+                Log.d("MainActivity", currentUser.getPhotoUrl().toString());
         }
     }
 
