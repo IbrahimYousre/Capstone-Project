@@ -6,9 +6,8 @@
     <string name="login">Login</string>
     <string name="or">OR</string>
     <string name="sign_up_with_email">Sign up with Email</string>
-    <string name="sign_in_with_google">Sign in with Google</string>
     <string name="authentication_error">Authentication failed.</string>
-    <string name="my_web_client_id">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
+    <string name="my_web_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
     <string name="logout">Logout</string>
     <string name="sign_up">Sign up</string>
     <string name="name">Name</string>
@@ -20,4 +19,6 @@
     <string name="add_topic">Add Topic</string>
     <string name="topic_add_error">Failed to add topic</string>
     <string name="topic_add_message">Topic added successfully</string>
+    <string name="profile_picture_content_description">Profile Picture</string>
+    <string name="camera_icon_content_description">Camera Icon</string>
 </resources>

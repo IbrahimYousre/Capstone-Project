@@ -20,8 +20,7 @@ public class AddTopicActivity extends AppCompatActivity {
     @BindView(R.id.topic_name_txt)
     EditText topicNameEditText;
 
-    FirebaseDatabase database;
-    DatabaseReference mTopicsReference;
+    private DatabaseReference mTopicsReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,7 @@ public class AddTopicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_topic);
         ButterKnife.bind(this);
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         mTopicsReference = database.getReference("topics");
     }
 

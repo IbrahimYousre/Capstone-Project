@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     @OnClick(R.id.profile_pic)
     void selectProfilePic() {
-
+        Toast.makeText(this,"Todo",Toast.LENGTH_SHORT).show();
     }
 
     private boolean isValidInput(String name, String email, String password) {
@@ -100,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
+    private final OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
             if (task.isSuccessful()) {
