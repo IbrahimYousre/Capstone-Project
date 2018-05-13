@@ -12,9 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
+        android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme"
             android:name=".AddTopicActivity"
             android:label="@string/add_topic"
             android:parentActivityName=".MainActivity">
@@ -38,6 +39,14 @@
             android:name=".ui.signup.SignUpActivity"
             android:theme="@style/AppTheme.Login"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.ask.AskActivity"
+            android:label="@string/ask"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

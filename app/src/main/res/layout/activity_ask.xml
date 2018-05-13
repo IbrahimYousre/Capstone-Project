@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ask.AskActivity">
+
+    <TextView
+        android:id="@+id/topic_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/topic"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/topic_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:padding="16dp"
+        android:text="@string/click_to_select_topic"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topic_label" />
+
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topic_txt" />
+
+    <TextView
+        android:id="@+id/question_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/your_question"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seperator" />
+
+    <TextView
+        android:id="@+id/characters_counter_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/question_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="0/100" />
+
+    <EditText
+        android:id="@+id/question_txt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/question_hint"
+        android:inputType="text|textCapSentences|textAutoCorrect|textMultiLine"
+        android:minLines="3"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_label" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:tint="@color/white"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_check_black_24dp" />
+
+</android.support.constraint.ConstraintLayout>

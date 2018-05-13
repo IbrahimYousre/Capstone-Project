@@ -26,4 +26,10 @@
     <string name="unfollow">Unfollow</string>
     <string name="all_topics">All Topics</string>
     <string name="my_topics">My Topics</string>
+    <string name="ask">Ask</string>
+    <string name="character_counter_format">%d/%d</string>
+    <string name="topic">Topic</string>
+    <string name="click_to_select_topic">Click to select topic</string>
+    <string name="your_question">Your Question</string>
+    <string name="question_hint">How, What, Why …?</string>
 </resources>

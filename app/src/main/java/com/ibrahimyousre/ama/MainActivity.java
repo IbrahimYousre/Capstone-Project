@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -14,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ibrahimyousre.ama.ui.ask.AskActivity;
 import com.ibrahimyousre.ama.ui.login.LoginActivity;
 import com.ibrahimyousre.ama.ui.topics.TopicsFragment;
 import com.ibrahimyousre.ama.util.BottomNavigationViewHelper;
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new Fragment())
                                 .commit();
+                        startActivity(new Intent(MainActivity.this, AskActivity.class));
                         break;
                 }
                 return true;
