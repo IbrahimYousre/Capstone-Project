@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.ibrahim.ama.ui.login.LoginActivity;
+import com.example.ibrahim.ama.ui.topics.TopicsFragment;
+import com.example.ibrahim.ama.util.BottomNavigationViewHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -54,22 +56,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void setupBottomNavigationView() {
+    private void setupBottomNavigationView() {
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.feed:
-
-                        break;
                     case R.id.topics:
-
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, new TopicsFragment())
+                                .commit();
                         break;
+                    case R.id.feed:
                     case R.id.notifications:
-
-                        break;
                     case R.id.profile:
-
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, new Fragment())
+                                .commit();
                         break;
                 }
                 return true;

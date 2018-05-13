@@ -1,4 +1,6 @@
 <resources>
+    <string name="my_web_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
+
     <string name="app_name">Ask Me Anything</string>
     <string name="welcome">Welcome</string>
     <string name="email">Email</string>
@@ -7,7 +9,6 @@
     <string name="or">OR</string>
     <string name="sign_up_with_email">Sign up with Email</string>
     <string name="authentication_error">Authentication failed.</string>
-    <string name="my_web_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
     <string name="logout">Logout</string>
     <string name="sign_up">Sign up</string>
     <string name="name">Name</string>
@@ -21,4 +22,8 @@
     <string name="topic_add_message">Topic added successfully</string>
     <string name="profile_picture_content_description">Profile Picture</string>
     <string name="camera_icon_content_description">Camera Icon</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="all_topics">All Topics</string>
+    <string name="my_topics">My Topics</string>
 </resources>
