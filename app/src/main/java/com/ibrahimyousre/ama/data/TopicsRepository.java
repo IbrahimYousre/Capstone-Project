@@ -12,11 +12,11 @@ import com.ibrahimyousre.ama.data.model.Topic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopicsRepository {
+import static com.ibrahimyousre.ama.data.DatabasePaths.PATH_TOPICS;
+import static com.ibrahimyousre.ama.data.DatabasePaths.PATH_TOPIC_NAME;
+import static com.ibrahimyousre.ama.data.DatabasePaths.PATH_USERS_TOPICS;
 
-    private static final String PATH_TOPICS = "topics";
-    private static final String PATH_TOPIC_NAME = "name";
-    private static final String PATH_USERS_TOPICS = "users_topics";
+public class TopicsRepository {
 
     private FirebaseDatabase firebaseDatabase;
     private Function<DataSnapshot, List<Topic>> topicsDeserializer =

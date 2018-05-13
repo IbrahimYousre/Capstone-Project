@@ -1,7 +1,6 @@
 package com.ibrahimyousre.ama.ui.topics;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -45,19 +44,17 @@ public class TopicsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
         MyFragmentPagerAdapter pagerAdapter =
-                new MyFragmentPagerAdapter(getContext(), getChildFragmentManager());
+                new MyFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        private Context mContext;
-
-        public MyFragmentPagerAdapter(Context context, FragmentManager fm) {
+        public MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
-            mContext = context;
         }
 
         @Override
@@ -79,9 +76,9 @@ public class TopicsFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return mContext.getString(R.string.my_topics);
+                    return getString(R.string.my_topics);
                 case 1:
-                    return mContext.getString(R.string.all_topics);
+                    return getString(R.string.all_topics);
             }
             return null;
         }

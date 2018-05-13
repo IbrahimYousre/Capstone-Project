@@ -33,8 +33,9 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    private String userUid;
     private TopicsAdapter adapter;
+
+    private String userUid;
     private TopicsViewModel topicsViewModel;
     private List<String> myTopicsUids = new ArrayList<>();
 
@@ -72,15 +73,18 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        topicsViewModel = ViewModelProviders.of(getParentFragment()).get(TopicsViewModel.class);
         userUid = getArguments().getString(KEY_USER_UID);
+
+        topicsViewModel = ViewModelProviders.of(getParentFragment()).get(TopicsViewModel.class);
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                bindData();
+                refresh();
             }
         });
-        bindData();
+        refresh();
+
         topicsViewModel.getUserTopics(userUid).observe(this, new Observer<List<Topic>>() {
             @Override
             public void onChanged(@Nullable List<Topic> topics) {
@@ -88,11 +92,12 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
                 for (Topic topic : topics) {
                     myTopicsUids.add(topic.getUid());
                 }
+                adapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void bindData() {
+    private void refresh() {
         swipeRefreshLayout.setRefreshing(true);
         Observer<List<Topic>> topicsObserver = new Observer<List<Topic>>() {
             @Override
@@ -106,13 +111,6 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
             case SHOW_ALL_TOPICS:
                 topicsViewModel.getAllTopics()
                         .observe(this, topicsObserver);
-                topicsViewModel.getUserTopics(getArguments().getString(KEY_USER_UID))
-                        .observe(this, new Observer<List<Topic>>() {
-                            @Override
-                            public void onChanged(@Nullable List<Topic> topics) {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
                 break;
             case SHOW_USER_TOPICS:
                 topicsViewModel.getUserTopics(getArguments().getString(KEY_USER_UID))

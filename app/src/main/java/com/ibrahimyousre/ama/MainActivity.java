@@ -40,20 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.my_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        setupBottomNavigationView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+            return;
         }
+
+        setupBottomNavigationView();
     }
 
     private void setupBottomNavigationView() {
@@ -78,26 +74,5 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            mAuth.signOut();
-            mGoogleSignInClient.signOut();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return true;
-        } else if (item.getItemId() == R.id.action_add_topic) {
-            startActivity(new Intent(this, AddTopicActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

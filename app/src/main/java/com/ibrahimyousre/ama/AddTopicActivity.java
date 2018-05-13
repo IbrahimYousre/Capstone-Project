@@ -15,6 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.ibrahimyousre.ama.data.DatabasePaths.PATH_TOPICS;
+import static com.ibrahimyousre.ama.data.DatabasePaths.PATH_TOPIC_NAME;
+
 public class AddTopicActivity extends AppCompatActivity {
 
     @BindView(R.id.topic_name_txt)
@@ -29,14 +32,14 @@ public class AddTopicActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mTopicsReference = database.getReference("topics");
+        mTopicsReference = database.getReference(PATH_TOPICS);
     }
 
     @OnClick(R.id.add_btn)
     void onAddTopic() {
         String topicName = topicNameEditText.getText().toString().trim();
         if (!topicName.isEmpty()) {
-            mTopicsReference.push().child("name").setValue(topicName)
+            mTopicsReference.push().child(PATH_TOPIC_NAME).setValue(topicName)
                     .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void a) {
