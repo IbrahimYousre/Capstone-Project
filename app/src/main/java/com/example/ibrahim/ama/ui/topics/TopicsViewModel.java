@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.example.ibrahim.ama.data.TopicsRepository;
 import com.example.ibrahim.ama.data.model.Topic;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
@@ -22,7 +23,15 @@ public class TopicsViewModel extends ViewModel {
         return topicsRepository.getAllTopics();
     }
 
-    public LiveData<List<Topic>> getUserTopics(String uid) {
-        return topicsRepository.getUserTopics(uid);
+    public LiveData<List<Topic>> getUserTopics(String userUid) {
+        return topicsRepository.getUserTopics(userUid);
+    }
+
+    public Task<Void> followTopic(String userUid, Topic topic) {
+        return topicsRepository.followTopic(userUid, topic);
+    }
+
+    public Task<Void> unfollowTopic(String userUid, Topic topic) {
+        return topicsRepository.unfollowTopic(userUid, topic);
     }
 }

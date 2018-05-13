@@ -65,7 +65,7 @@ public class TopicsFragment extends Fragment {
             if (position == 0) {
                 return TopicListFragment.getUserTopicsInstance(mAuth.getUid());
             } else if (position == 1) {
-                return TopicListFragment.getAllTopicsInstance();
+                return TopicListFragment.getAllTopicsInstance(mAuth.getUid());
             }
             return null;
         }

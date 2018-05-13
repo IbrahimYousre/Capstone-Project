@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 import com.example.ibrahim.ama.R;
 import com.example.ibrahim.ama.data.model.Topic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TopicListFragment extends Fragment {
+public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsProvider {
 
     public static final String KEY_TOPICS_TO_SHOW = "topics";
     public static final String SHOW_ALL_TOPICS = "all";
@@ -32,17 +33,19 @@ public class TopicListFragment extends Fragment {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    private String userUid;
     private TopicsAdapter adapter;
-
     private TopicsViewModel topicsViewModel;
+    private List<String> myTopicsUids = new ArrayList<>();
 
     public TopicListFragment() {
     }
 
-    public static Fragment getAllTopicsInstance() {
+    public static Fragment getAllTopicsInstance(String userUid) {
         Fragment fragment = new TopicListFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_TOPICS_TO_SHOW, SHOW_ALL_TOPICS);
+        bundle.putString(KEY_USER_UID, userUid);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -61,7 +64,7 @@ public class TopicListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topic_list, container, false);
         ButterKnife.bind(this, view);
-        adapter = new TopicsAdapter();
+        adapter = new TopicsAdapter(this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -70,6 +73,7 @@ public class TopicListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         topicsViewModel = ViewModelProviders.of(getParentFragment()).get(TopicsViewModel.class);
+        userUid = getArguments().getString(KEY_USER_UID);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -77,6 +81,15 @@ public class TopicListFragment extends Fragment {
             }
         });
         bindData();
+        topicsViewModel.getUserTopics(userUid).observe(this, new Observer<List<Topic>>() {
+            @Override
+            public void onChanged(@Nullable List<Topic> topics) {
+                myTopicsUids.clear();
+                for (Topic topic : topics) {
+                    myTopicsUids.add(topic.getUid());
+                }
+            }
+        });
     }
 
     private void bindData() {
@@ -93,11 +106,33 @@ public class TopicListFragment extends Fragment {
             case SHOW_ALL_TOPICS:
                 topicsViewModel.getAllTopics()
                         .observe(this, topicsObserver);
+                topicsViewModel.getUserTopics(getArguments().getString(KEY_USER_UID))
+                        .observe(this, new Observer<List<Topic>>() {
+                            @Override
+                            public void onChanged(@Nullable List<Topic> topics) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
                 break;
             case SHOW_USER_TOPICS:
                 topicsViewModel.getUserTopics(getArguments().getString(KEY_USER_UID))
                         .observe(this, topicsObserver);
                 break;
         }
+    }
+
+    @Override
+    public void followTopic(Topic topic) {
+        topicsViewModel.followTopic(userUid, topic);
+    }
+
+    @Override
+    public void unfollowTopic(Topic topic) {
+        topicsViewModel.unfollowTopic(userUid, topic);
+    }
+
+    @Override
+    public boolean isFollowingTopic(String topicUid) {
+        return myTopicsUids != null && myTopicsUids.contains(topicUid);
     }
 }

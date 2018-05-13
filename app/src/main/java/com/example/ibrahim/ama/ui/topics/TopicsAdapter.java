@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ibrahim.ama.R;
@@ -14,10 +15,22 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewHolder> {
 
     List<Topic> topics;
+    TopicsProvider topicsProvider;
+
+    public interface TopicsProvider {
+        void followTopic(Topic topic);
+        void unfollowTopic(Topic topic);
+        boolean isFollowingTopic(String topicUid);
+    }
+
+    public TopicsAdapter(TopicsProvider topicsProvider) {
+        this.topicsProvider = topicsProvider;
+    }
 
     @NonNull
     @Override
@@ -31,6 +44,11 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         Topic topic = topics.get(position);
         holder.topicNameTextView.setText(topic.getName());
+        if (topicsProvider.isFollowingTopic(topic.getUid())) {
+            holder.actionButton.setText(R.string.unfollow);
+        } else {
+            holder.actionButton.setText(R.string.follow);
+        }
     }
 
     @Override
@@ -42,15 +60,27 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         this.topics = topics;
     }
 
-    public static class TopicViewHolder extends RecyclerView.ViewHolder {
+    public class TopicViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.topic_name)
         TextView topicNameTextView;
+
+        @BindView(R.id.topic_action_btn)
+        Button actionButton;
 
         public TopicViewHolder(View itemView) {
             super(itemView);
             ButterKnife.setDebug(true);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.topic_action_btn)
+        void onActionClicked() {
+            Topic topic = topics.get(getAdapterPosition());
+            if (topicsProvider.isFollowingTopic(topic.getUid()))
+                topicsProvider.unfollowTopic(topic);
+            else
+                topicsProvider.followTopic(topic);
         }
     }
 }
