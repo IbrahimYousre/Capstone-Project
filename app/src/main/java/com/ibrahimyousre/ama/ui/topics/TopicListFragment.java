@@ -3,6 +3,7 @@ package com.ibrahimyousre.ama.ui.topics;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsProvider {
 
-    public static final String KEY_TOPICS_TO_SHOW = "topics";
-    public static final String SHOW_ALL_TOPICS = "all";
-    public static final String SHOW_USER_TOPICS = "user";
-    public static final String KEY_USER_UID = "user_uid";
+    private static final String KEY_TOPICS_TO_SHOW = "topics";
+    private static final String SHOW_ALL_TOPICS = "all";
+    private static final String SHOW_USER_TOPICS = "user";
+    private static final String KEY_USER_UID = "user_uid";
 
     @BindView(R.id.topic_rv)
     RecyclerView recyclerView;
@@ -61,7 +62,7 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topic_list, container, false);
         ButterKnife.bind(this, view);

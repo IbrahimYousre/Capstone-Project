@@ -20,7 +20,7 @@ import butterknife.OnClick;
 
 public class AskActivity extends AppCompatActivity {
 
-    static final int MAX_CHARACHTER_COUNTER = 150;
+    private static final int MAX_CHARACHTER_COUNTER = 150;
 
     @BindView(R.id.topic_txt)
     TextView topicTextView;
@@ -31,8 +31,8 @@ public class AskActivity extends AppCompatActivity {
     @BindView(R.id.question_txt)
     EditText questionEditText;
 
-    FirebaseAuth mAuth;
-    FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class AskActivity extends AppCompatActivity {
 
     @OnClick(R.id.topic_txt)
     void onSelectTopic(View view) {
-        Toast.makeText(this,"TODO",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.fab)
