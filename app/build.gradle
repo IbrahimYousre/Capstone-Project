@@ -21,7 +21,7 @@ android {
 
 ext {
     supportLibraryVersion = '27.1.1'
-    constraintLayoutVersion = '1.1.0'
+    constraintLayoutVersion = '1.1.2'
     lifecycleVersion = "1.1.1"
     butterKnifeVersion = '8.8.1'
     glideVersion = '4.7.1'
@@ -40,11 +40,11 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
-    implementation "com.google.firebase:firebase-core:15.0.2"
-    implementation "com.google.firebase:firebase-auth:15.1.0"
+    implementation "com.google.firebase:firebase-core:16.0.1"
+    implementation "com.google.firebase:firebase-auth:16.0.2"
     implementation "com.google.android.gms:play-services-auth:15.0.1"
-    implementation "com.google.firebase:firebase-database:15.0.1"
-    implementation "com.google.firebase:firebase-storage:15.0.2"
+    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation "com.google.firebase:firebase-storage:16.0.1"
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"

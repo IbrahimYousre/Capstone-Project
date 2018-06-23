@@ -8,50 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:794481543923:android:9efc41918760e993",
-        "android_client_info": {
-          "package_name": "com.example.ibrahim.ama"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "794481543923-nbpjc91egjfd4c2bgiapfb1c7ns8nbqr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.ibrahim.ama",
-            "certificate_hash": "4d8ce9b31d6fe7843a8c9c9b43240b53daacd7e2"
-          }
-        },
-        {
-          "client_id": "794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDvaK2OjJoVdHOMsnpXPauK8X43A3orQio"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:794481543923:android:62278b64d2464f76",
         "android_client_info": {
           "package_name": "com.ibrahimyousre.ama"
