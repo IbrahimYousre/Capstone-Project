@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
+public class FirebaseQueryLiveData extends LiveData<DatabaseResource> {
 
     private final Query query;
     private final ValueEventListener valueEventListener;
@@ -20,18 +20,18 @@ public class FirebaseQueryLiveData extends LiveData<DataSnapshot> {
 
     public FirebaseQueryLiveData(@NonNull Query query, boolean singleEvent) {
         this.query = query;
+        this.singleEvent = singleEvent;
         this.valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseQueryLiveData.this.setValue(dataSnapshot);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                setValue(DatabaseResource.success(dataSnapshot));
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                setValue(DatabaseResource.error(databaseError));
             }
         };
-        this.singleEvent = singleEvent;
     }
 
     @Override

@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsProvider {
 
-    private static final String KEY_TOPICS_TO_SHOW = "topics";
+    private static final String KEY_TOPICS_TO_SHOW = "topics_to_show";
     private static final String SHOW_ALL_TOPICS = "all";
     private static final String SHOW_USER_TOPICS = "user";
     private static final String KEY_USER_UID = "user_uid";
@@ -38,7 +38,7 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
 
     private String userUid;
     private TopicsViewModel topicsViewModel;
-    private List<String> myTopicsUids = new ArrayList<>();
+    private final List<String> myTopicsUids = new ArrayList<>();
 
     public TopicListFragment() {
     }

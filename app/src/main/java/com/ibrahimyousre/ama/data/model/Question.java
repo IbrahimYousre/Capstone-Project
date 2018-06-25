@@ -1,37 +1,24 @@
 package com.ibrahimyousre.ama.data.model;
 
-import com.google.firebase.database.Exclude;
+import android.support.annotation.NonNull;
 
-import java.util.Map;
+public class Question extends Entity {
 
-public class Question {
-
-    @Exclude
-    String uid;
-
-    String topic;
+    // forign keys
     String topicId;
+
+    // denormalized data
+    String topicName;
+
     String body;
-    Answer topAnswer;
-    Map<String, Boolean> followers;
 
     public Question() {
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public Question(@NonNull Topic topic, String body) {
+        this.topicId = topic.uid;
+        this.topicName = topic.name;
+        this.body = body;
     }
 
     public String getTopicId() {
@@ -42,27 +29,19 @@ public class Question {
         this.topicId = topicId;
     }
 
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+
     public String getBody() {
         return body;
     }
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public Answer getTopAnswer() {
-        return topAnswer;
-    }
-
-    public void setTopAnswer(Answer topAnswer) {
-        this.topAnswer = topAnswer;
-    }
-
-    public Map<String, Boolean> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Map<String, Boolean> followers) {
-        this.followers = followers;
     }
 }

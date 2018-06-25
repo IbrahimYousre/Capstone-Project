@@ -1,24 +1,36 @@
 package com.ibrahimyousre.ama.ui.ask;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.data.model.Question;
+import com.ibrahimyousre.ama.data.model.Topic;
+import com.ibrahimyousre.ama.ui.topics.TopicsViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AskActivity extends AppCompatActivity {
+import static com.ibrahimyousre.ama.ui.ask.TopicsListDialogFragment.KEY_TOPICS_LIST;
+
+public class AskActivity extends AppCompatActivity
+        implements TopicsListDialogFragment.TopicSelectListener {
 
     private static final int MAX_CHARACHTER_COUNTER = 150;
 
@@ -31,8 +43,13 @@ public class AskActivity extends AppCompatActivity {
     @BindView(R.id.question_txt)
     EditText questionEditText;
 
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
+    private Topic selectedTopic;
+    private List<Topic> topicList;
+    private String[] topicNameArray;
+    private boolean selectWhenReady = false;
+
+    private TopicsViewModel topicsViewModel;
+    private QuestionsViewModel questionsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +57,27 @@ public class AskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ask);
         ButterKnife.bind(this);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
+        questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel.class);
+        topicsViewModel = ViewModelProviders.of(this).get(TopicsViewModel.class);
+        topicsViewModel.getAllTopics().observe(this, new Observer<List<Topic>>() {
+            @Override
+            public void onChanged(@Nullable List<Topic> topics) {
+                topicList = topics;
+                topicNameArray = new String[topics.size()];
+                for (int i = 0; i < topicNameArray.length; i++) {
+                    topicNameArray[i] = topics.get(i).getName();
+                }
+                if (selectWhenReady) {
+                    onSelectTopic();
+                    selectWhenReady = false;
+                }
+            }
+        });
 
+        setupView();
+    }
+
+    private void setupView() {
         final String counterFormat = getString(R.string.character_counter_format);
         charactersCounterTextView.setText(
                 String.format(counterFormat, 0, MAX_CHARACHTER_COUNTER));
@@ -70,12 +105,50 @@ public class AskActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.topic_txt)
-    void onSelectTopic(View view) {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    void onSelectTopic() {
+        if (topicList != null) {
+            DialogFragment topicsListDialog = new TopicsListDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putStringArray(KEY_TOPICS_LIST, topicNameArray);
+            topicsListDialog.setArguments(bundle);
+            topicsListDialog.show(getSupportFragmentManager(), "topics_list");
+        } else {
+            selectWhenReady = true;
+        }
     }
 
     @OnClick(R.id.fab)
     void onSubmit() {
-        finish();
+        if (selectedTopic != null) {
+            String questionBody = questionEditText.getText().toString().trim();
+            if (!questionBody.isEmpty()) {
+                Question question = new Question(selectedTopic, questionBody);
+                questionsViewModel.addQuestion(question).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AskActivity.this,
+                                "Question was added successfuly",
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AskActivity.this,
+                                "Failed to add question, please check network, and try again",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else
+                Toast.makeText(this, "Question can't be empty!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Please select a topic!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onTopicSelected(int topicIndex) {
+        selectedTopic = topicList.get(topicIndex);
+        topicTextView.setText(selectedTopic.getName());
     }
 }

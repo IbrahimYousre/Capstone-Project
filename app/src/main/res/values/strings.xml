@@ -1,7 +1,7 @@
 <resources>
     <string name="my_web_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
 
-    <string name="app_name">Ask Me Anything</string>
+    <string name="app_name">AMA</string>
     <string name="welcome">Welcome</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -27,9 +27,14 @@
     <string name="all_topics">All Topics</string>
     <string name="my_topics">My Topics</string>
     <string name="ask">Ask</string>
-    <string name="character_counter_format">%d/%d</string>
+    <string name="character_counter_format" translatable="false">%d/%d</string>
     <string name="topic">Topic</string>
     <string name="click_to_select_topic">Click to select topic</string>
+    <string name="select_topic">Select topic</string>
     <string name="your_question">Your Question</string>
     <string name="question_hint">How, What, Why …?</string>
+    <string name="navigation_feed">Feed</string>
+    <string name="navigation_topics">Topics</string>
+    <string name="navigation_notifications">Notifications</string>
+    <string name="navigation_me">Me</string>
 </resources>

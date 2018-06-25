@@ -54,7 +54,7 @@ public class TopicsFragment extends Fragment {
 
     class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public MyFragmentPagerAdapter(FragmentManager fm) {
+        MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

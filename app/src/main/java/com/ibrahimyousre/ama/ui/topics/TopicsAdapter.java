@@ -20,11 +20,13 @@ import butterknife.OnClick;
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewHolder> {
 
     List<Topic> topics;
-    TopicsProvider topicsProvider;
+    final TopicsProvider topicsProvider;
 
     public interface TopicsProvider {
         void followTopic(Topic topic);
+
         void unfollowTopic(Topic topic);
+
         boolean isFollowingTopic(String topicUid);
     }
 
@@ -70,7 +72,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
         public TopicViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.setDebug(true);
             ButterKnife.bind(this, itemView);
         }
 

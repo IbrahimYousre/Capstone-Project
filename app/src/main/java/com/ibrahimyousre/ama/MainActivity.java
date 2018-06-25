@@ -58,22 +58,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.feed:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, new Fragment())
+                                .commit();
+                        break;
                     case R.id.topics:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new TopicsFragment())
                                 .commit();
                         break;
-                    case R.id.feed:
                     case R.id.notifications:
+                        startActivity(
+                                new Intent(MainActivity.this, AskActivity.class));
+                        break;
                     case R.id.profile:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, new Fragment())
-                                .commit();
-                        startActivity(new Intent(MainActivity.this, AskActivity.class));
+                        signOut();
                         break;
                 }
                 return true;
             }
         });
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        mGoogleSignInClient.signOut();
+        startActivity(
+                new Intent(MainActivity.this, LoginActivity.class));
+        finish();
     }
 }

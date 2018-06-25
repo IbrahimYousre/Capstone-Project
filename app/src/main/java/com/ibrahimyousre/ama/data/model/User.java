@@ -1,25 +1,12 @@
 package com.ibrahimyousre.ama.data.model;
 
-import com.google.firebase.database.Exclude;
-
-public class User {
-
-    @Exclude
-    String uid;
+public class User extends Entity {
 
     String name;
     String title;
     String photoUrl;
 
     public User() {
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getName() {

@@ -1,24 +1,14 @@
 package com.ibrahimyousre.ama.data.model;
 
-import com.google.firebase.database.Exclude;
-
-public class Topic {
-
-    @Exclude
-    String uid;
+public class Topic extends Entity {
 
     String name;
-    Question lastAnsweredQuestion;
 
     public Topic() {
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+    public Topic(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -27,13 +17,5 @@ public class Topic {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Question getLastAnsweredQuestion() {
-        return lastAnsweredQuestion;
-    }
-
-    public void setLastAnsweredQuestion(Question lastAnsweredQuestion) {
-        this.lastAnsweredQuestion = lastAnsweredQuestion;
     }
 }
