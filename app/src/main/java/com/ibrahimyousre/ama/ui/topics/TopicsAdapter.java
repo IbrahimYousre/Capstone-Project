@@ -23,6 +23,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
     final TopicsProvider topicsProvider;
 
     public interface TopicsProvider {
+        void onTopicSelected(Topic topic);
+
         void followTopic(Topic topic);
 
         void unfollowTopic(Topic topic);
@@ -73,6 +75,12 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         public TopicViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.topic_card_view)
+        void onTopicClicked() {
+            Topic topic = topics.get(getAdapterPosition());
+            topicsProvider.onTopicSelected(topic);
         }
 
         @OnClick(R.id.topic_action_btn)

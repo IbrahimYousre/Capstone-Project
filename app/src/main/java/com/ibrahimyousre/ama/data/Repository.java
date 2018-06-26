@@ -78,21 +78,20 @@ public class Repository {
 
     public Task<Void> addQuestion(Question question) {
         return firebaseDatabase.getReference()
-                .child(PATH_QUESTIONS).child(question.getTopicId()).push()
-                .setValue(question);
+                .child(PATH_QUESTIONS).child(question.getTopicId())
+                .push().setValue(question);
     }
 
     public LiveData<List<Question>> getQuestionsByTopic(String uid) {
         FirebaseQueryLiveData questionsLiveData = new FirebaseQueryLiveData(
-                firebaseDatabase.getReference(PATH_ANSWERS)
-                        .orderByChild(FIELD_TOPIC_ID).equalTo(uid));
+                firebaseDatabase.getReference(PATH_QUESTIONS).child(uid));
         return Transformations.map(questionsLiveData, new ListDeserializer<>(Question.class));
     }
 
     public Task<Void> addAnswer(Answer answer) {
         return firebaseDatabase.getReference()
-                .child(PATH_ANSWERS).push()
-                .setValue(answer);
+                .child(PATH_ANSWERS)
+                .push().setValue(answer);
     }
 
     public LiveData<List<Answer>> getAnswersByUser(String uid) {

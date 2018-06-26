@@ -21,6 +21,10 @@
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 
+    <style name="LightButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/colorPrimaryLight</item>
+    </style>
+
     <style name="WhiteButton" parent="Theme.AppCompat.Light">
         <item name="colorButtonNormal">@color/white</item>
         <item name="android:textStyle">bold</item>

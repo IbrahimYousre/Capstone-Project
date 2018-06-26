@@ -2,7 +2,9 @@ package com.ibrahimyousre.ama.data.model;
 
 import com.google.firebase.database.Exclude;
 
-public abstract class Entity {
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
 
     @Exclude
     String uid;

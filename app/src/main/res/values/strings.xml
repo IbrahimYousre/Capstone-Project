@@ -37,4 +37,7 @@
     <string name="navigation_topics">Topics</string>
     <string name="navigation_notifications">Notifications</string>
     <string name="navigation_me">Me</string>
+    <string name="read">Read</string>
+    <string name="answer">Answer</string>
+    <string name="your_answer">Your Answer</string>
 </resources>

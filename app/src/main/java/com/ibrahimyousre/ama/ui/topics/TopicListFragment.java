@@ -2,6 +2,7 @@ package com.ibrahimyousre.ama.ui.topics;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Topic;
+import com.ibrahimyousre.ama.ui.topic.TopicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +120,14 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
                         .observe(this, topicsObserver);
                 break;
         }
+    }
+
+    @Override
+    public void onTopicSelected(Topic topic) {
+        Intent intent = new Intent(getContext(), TopicActivity.class);
+        intent.putExtra(TopicActivity.EXTRA_TOPIC_UID, topic.getUid());
+        intent.putExtra(TopicActivity.EXTRA_TOPIC_NAME, topic.getName());
+        startActivity(intent);
     }
 
     @Override

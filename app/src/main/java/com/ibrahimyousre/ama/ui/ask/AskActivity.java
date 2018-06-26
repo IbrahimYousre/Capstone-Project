@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.ibrahimyousre.ama.ui.ask.TopicsListDialogFragment.KEY_TOPICS_LIST;
+import static com.ibrahimyousre.ama.ui.topic.TopicActivity.EXTRA_TOPIC_NAME;
+import static com.ibrahimyousre.ama.ui.topic.TopicActivity.EXTRA_TOPIC_UID;
 
 public class AskActivity extends AppCompatActivity
         implements TopicsListDialogFragment.TopicSelectListener {
@@ -56,6 +58,16 @@ public class AskActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask);
         ButterKnife.bind(this);
+
+        String topicId = getIntent().getStringExtra(EXTRA_TOPIC_UID);
+        String topicName = getIntent().getStringExtra(EXTRA_TOPIC_NAME);
+
+        if (topicId != null) {
+            selectedTopic = new Topic();
+            selectedTopic.setUid(topicId);
+            selectedTopic.setName(topicName);
+            topicTextView.setText(selectedTopic.getName());
+        }
 
         questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel.class);
         topicsViewModel = ViewModelProviders.of(this).get(TopicsViewModel.class);

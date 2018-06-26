@@ -2,7 +2,7 @@ package com.ibrahimyousre.ama.data.model;
 
 import android.support.annotation.NonNull;
 
-public class Answer extends Entity {
+public class Answer extends Entity{
 
     // forign keys
     String topicId;
