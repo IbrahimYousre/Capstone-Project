@@ -7,8 +7,8 @@ import com.google.firebase.database.DatabaseError;
 
 public class DatabaseResource {
 
-    public final DataSnapshot data;
-    public final DatabaseError error;
+    private final DataSnapshot data;
+    private final DatabaseError error;
 
     private DatabaseResource(DataSnapshot data, DatabaseError error) {
         this.data = data;
@@ -25,5 +25,13 @@ public class DatabaseResource {
 
     public static DatabaseResource error(@NonNull DatabaseError error) {
         return new DatabaseResource(null, error);
+    }
+
+    public DataSnapshot getData() {
+        return data;
+    }
+
+    public DatabaseError getError() {
+        return error;
     }
 }

@@ -1,4 +1,4 @@
-package com.ibrahimyousre.ama.ui.topics;
+package com.ibrahimyousre.ama.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +19,8 @@ import butterknife.OnClick;
 
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewHolder> {
 
-    List<Topic> topics;
-    final TopicsProvider topicsProvider;
+    private List<Topic> topics;
+    private final TopicsProvider topicsProvider;
 
     public interface TopicsProvider {
         void onTopicSelected(Topic topic);
@@ -29,10 +29,10 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
         void unfollowTopic(Topic topic);
 
-        boolean isFollowingTopic(String topicUid);
+        boolean isFollowingTopic(Topic topic);
     }
 
-    public TopicsAdapter(TopicsProvider topicsProvider) {
+    public TopicsAdapter(@NonNull TopicsProvider topicsProvider) {
         this.topicsProvider = topicsProvider;
     }
 
@@ -48,7 +48,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         Topic topic = topics.get(position);
         holder.topicNameTextView.setText(topic.getName());
-        if (topicsProvider.isFollowingTopic(topic.getUid())) {
+        if (topicsProvider.isFollowingTopic(topic)) {
             holder.actionButton.setText(R.string.unfollow);
         } else {
             holder.actionButton.setText(R.string.follow);
@@ -64,7 +64,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         this.topics = topics;
     }
 
-    public class TopicViewHolder extends RecyclerView.ViewHolder {
+    class TopicViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.topic_name)
         TextView topicNameTextView;
@@ -72,7 +72,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         @BindView(R.id.topic_action_btn)
         Button actionButton;
 
-        public TopicViewHolder(View itemView) {
+        TopicViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -86,7 +86,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         @OnClick(R.id.topic_action_btn)
         void onActionClicked() {
             Topic topic = topics.get(getAdapterPosition());
-            if (topicsProvider.isFollowingTopic(topic.getUid()))
+            if (topicsProvider.isFollowingTopic(topic))
                 topicsProvider.unfollowTopic(topic);
             else
                 topicsProvider.followTopic(topic);

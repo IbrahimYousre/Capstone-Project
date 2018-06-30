@@ -1,4 +1,4 @@
-package com.ibrahimyousre.ama.ui.signup;
+package com.ibrahimyousre.ama.ui.auth;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,7 +6,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,9 +22,6 @@ import butterknife.OnClick;
 import static com.ibrahimyousre.ama.util.Constants.EMAIL_PATTERN;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    @BindView(R.id.profile_pic)
-    ImageView profilePicture;
 
     @BindView(R.id.user_name_txt)
     EditText userNameEditText;
@@ -57,11 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mAuth = FirebaseAuth.getInstance();
-    }
-
-    @OnClick(R.id.profile_pic)
-    void selectProfilePic() {
-        Toast.makeText(this, "Todo", Toast.LENGTH_SHORT).show();
+        // TODO: Signup show "already have account login"
     }
 
     private boolean isValidInput(String name, String email, String password) {
@@ -104,7 +96,6 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
             if (task.isSuccessful()) {
-                setResult(RESULT_OK);
                 finish();
             } else {
                 Toast.makeText(SignUpActivity.this,

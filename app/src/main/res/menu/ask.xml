@@ -6,5 +6,5 @@
         android:id="@+id/action_ask"
         android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/ask"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="ifRoom" />
 </menu>

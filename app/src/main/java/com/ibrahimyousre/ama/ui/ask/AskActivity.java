@@ -28,8 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.ibrahimyousre.ama.ui.ask.TopicsListDialogFragment.KEY_TOPICS_LIST;
-import static com.ibrahimyousre.ama.ui.topic.TopicActivity.EXTRA_TOPIC_NAME;
-import static com.ibrahimyousre.ama.ui.topic.TopicActivity.EXTRA_TOPIC_UID;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 
 public class AskActivity extends AppCompatActivity
         implements TopicsListDialogFragment.TopicSelectListener {
@@ -59,13 +58,8 @@ public class AskActivity extends AppCompatActivity
         setContentView(R.layout.activity_ask);
         ButterKnife.bind(this);
 
-        String topicId = getIntent().getStringExtra(EXTRA_TOPIC_UID);
-        String topicName = getIntent().getStringExtra(EXTRA_TOPIC_NAME);
-
-        if (topicId != null) {
-            selectedTopic = new Topic();
-            selectedTopic.setUid(topicId);
-            selectedTopic.setName(topicName);
+        selectedTopic = (Topic) getIntent().getSerializableExtra(EXTRA_TOPIC);
+        if (selectedTopic != null) {
             topicTextView.setText(selectedTopic.getName());
         }
 
@@ -81,7 +75,6 @@ public class AskActivity extends AppCompatActivity
                 }
                 if (selectWhenReady) {
                     onSelectTopic();
-                    selectWhenReady = false;
                 }
             }
         });
@@ -118,6 +111,7 @@ public class AskActivity extends AppCompatActivity
 
     @OnClick(R.id.topic_txt)
     void onSelectTopic() {
+        selectWhenReady = false;
         if (topicList != null) {
             DialogFragment topicsListDialog = new TopicsListDialogFragment();
             Bundle bundle = new Bundle();

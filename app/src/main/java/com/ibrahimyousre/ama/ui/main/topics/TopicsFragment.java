@@ -1,4 +1,4 @@
-package com.ibrahimyousre.ama.ui.topics;
+package com.ibrahimyousre.ama.ui.main.topics;
 
 
 import android.os.Bundle;

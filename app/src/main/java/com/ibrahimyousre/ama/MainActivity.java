@@ -13,8 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ibrahimyousre.ama.ui.login.LoginActivity;
-import com.ibrahimyousre.ama.ui.topics.TopicsFragment;
+import com.ibrahimyousre.ama.ui.auth.LoginActivity;
+import com.ibrahimyousre.ama.ui.main.topics.TopicsFragment;
 import com.ibrahimyousre.ama.util.BottomNavigationViewHelper;
 
 import butterknife.BindView;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.my_web_client_id))
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private void signOut() {
         mAuth.signOut();
         mGoogleSignInClient.signOut();
-        startActivity(
-                new Intent(MainActivity.this, LoginActivity.class));
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
     }
 }

@@ -8,7 +8,7 @@ public class DatabaseErrorUtils {
 
     public static void log(DatabaseError databaseError) {
         Timber.d(databaseError.toException(),
-                "Database Error #%d, %s",
+                "Database Error #%d: %s",
                 databaseError.getCode(),
                 databaseError.getMessage());
         Timber.v(databaseError.getDetails());

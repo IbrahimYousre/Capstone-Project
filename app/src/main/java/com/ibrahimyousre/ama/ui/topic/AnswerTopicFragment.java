@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.adapters.QuestionsAdapter;
 import com.ibrahimyousre.ama.data.model.Question;
 import com.ibrahimyousre.ama.ui.answer.AnswerActivity;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.ibrahimyousre.ama.ui.answer.AnswerActivity.EXTRA_QUESTION;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
 
 public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.OnAnswerQuestionClickListender {
 
@@ -75,7 +76,7 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
     }
 
     @Override
-    public void onAnswerQuestion(Question question) {
+    public void onAnswerQuestionClicked(Question question) {
         Intent intent = new Intent(getActivity(), AnswerActivity.class);
         intent.putExtra(EXTRA_QUESTION, question);
         startActivity(intent);

@@ -1,4 +1,4 @@
-package com.ibrahimyousre.ama.ui.topic;
+package com.ibrahimyousre.ama.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,19 +18,15 @@ import butterknife.OnClick;
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
-    List<Question> questions;
-    private OnAnswerQuestionClickListender answerQuestionClickListender;
+    private List<Question> questions;
+    private final OnAnswerQuestionClickListender answerQuestionClickListender;
 
     public interface OnAnswerQuestionClickListender {
-        void onAnswerQuestion(Question question);
+        void onAnswerQuestionClicked(Question question);
     }
 
-    public QuestionsAdapter(OnAnswerQuestionClickListender answerQuestionClickListender) {
+    public QuestionsAdapter(@NonNull OnAnswerQuestionClickListender answerQuestionClickListender) {
         this.answerQuestionClickListender = answerQuestionClickListender;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
     }
 
     @NonNull
@@ -52,19 +48,23 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         return questions == null ? 0 : questions.size();
     }
 
-    public class QuestionViewHolder extends RecyclerView.ViewHolder {
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    class QuestionViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.question_txt)
         TextView questionTextView;
 
-        public QuestionViewHolder(View itemView) {
+        QuestionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.answer_btn)
         void answer() {
-            answerQuestionClickListender.onAnswerQuestion(questions.get(getAdapterPosition()));
+            answerQuestionClickListender.onAnswerQuestionClicked(questions.get(getAdapterPosition()));
         }
     }
 }

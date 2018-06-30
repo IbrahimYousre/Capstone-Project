@@ -19,7 +19,7 @@ import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_ANSWERS;
 import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_QUESTIONS;
 import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_TOPICS;
 import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_USERS;
-import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_USERS_TOPICS;
+import static com.ibrahimyousre.ama.data.DatabaseConstants.PATH_USER_TOPICS;
 
 public class Repository {
 
@@ -30,6 +30,7 @@ public class Repository {
 
     private Repository() {
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.setPersistenceEnabled(true);
     }
 
     public static Repository getInstance() {
@@ -60,25 +61,25 @@ public class Repository {
 
     public LiveData<List<Topic>> getUserTopics(String uid) {
         FirebaseQueryLiveData userTopicsLiveData = new FirebaseQueryLiveData(
-                firebaseDatabase.getReference(PATH_USERS_TOPICS).child(uid));
+                firebaseDatabase.getReference(PATH_USER_TOPICS).child(uid));
         return Transformations.map(userTopicsLiveData, new ListDeserializer<>(Topic.class));
     }
 
     public Task<Void> followTopic(String userUid, Topic topic) {
-        return firebaseDatabase.getReference(PATH_USERS_TOPICS)
+        return firebaseDatabase.getReference(PATH_USER_TOPICS)
                 .child(userUid).child(topic.getUid())
                 .setValue(topic);
     }
 
     public Task<Void> unfollowTopic(String userUid, Topic topic) {
-        return firebaseDatabase.getReference(PATH_USERS_TOPICS)
+        return firebaseDatabase.getReference(PATH_USER_TOPICS)
                 .child(userUid).child(topic.getUid())
                 .removeValue();
     }
 
     public Task<Void> addQuestion(Question question) {
-        return firebaseDatabase.getReference()
-                .child(PATH_QUESTIONS).child(question.getTopicId())
+        return firebaseDatabase.getReference(PATH_QUESTIONS)
+                .child(question.getTopicId())
                 .push().setValue(question);
     }
 
@@ -89,8 +90,7 @@ public class Repository {
     }
 
     public Task<Void> addAnswer(Answer answer) {
-        return firebaseDatabase.getReference()
-                .child(PATH_ANSWERS)
+        return firebaseDatabase.getReference(PATH_ANSWERS)
                 .push().setValue(answer);
     }
 

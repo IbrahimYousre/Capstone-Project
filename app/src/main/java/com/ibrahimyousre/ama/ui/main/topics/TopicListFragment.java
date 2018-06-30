@@ -1,4 +1,4 @@
-package com.ibrahimyousre.ama.ui.topics;
+package com.ibrahimyousre.ama.ui.main.topics;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.adapters.TopicsAdapter;
 import com.ibrahimyousre.ama.data.model.Topic;
 import com.ibrahimyousre.ama.ui.topic.TopicActivity;
 
@@ -22,6 +23,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 
 public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsProvider {
 
@@ -125,8 +128,7 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     @Override
     public void onTopicSelected(Topic topic) {
         Intent intent = new Intent(getContext(), TopicActivity.class);
-        intent.putExtra(TopicActivity.EXTRA_TOPIC_UID, topic.getUid());
-        intent.putExtra(TopicActivity.EXTRA_TOPIC_NAME, topic.getName());
+        intent.putExtra(EXTRA_TOPIC, topic);
         startActivity(intent);
     }
 
@@ -141,7 +143,7 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     }
 
     @Override
-    public boolean isFollowingTopic(String topicUid) {
-        return myTopicsUids != null && myTopicsUids.contains(topicUid);
+    public boolean isFollowingTopic(Topic topic) {
+        return myTopicsUids != null && myTopicsUids.contains(topic.getUid());
     }
 }

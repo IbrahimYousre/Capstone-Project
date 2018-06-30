@@ -2,7 +2,7 @@ package com.ibrahimyousre.ama.data.model;
 
 import android.support.annotation.NonNull;
 
-public class Answer extends Entity{
+public class Answer extends Entity {
 
     // forign keys
     String topicId;
@@ -17,6 +17,7 @@ public class Answer extends Entity{
     String userPhotoUrl;
 
     String text;
+    long timeStamp;
     int upvotesCount;
 
     public Answer() {
@@ -34,7 +35,7 @@ public class Answer extends Entity{
         this.userPhotoUrl = user.photoUrl;
 
         this.text = text;
-        upvotesCount = 0;
+        this.upvotesCount = 0;
     }
 
     public String getTopicId() {
@@ -107,6 +108,10 @@ public class Answer extends Entity{
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
     }
 
     public int getUpvotesCount() {

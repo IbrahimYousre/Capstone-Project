@@ -1,5 +1,5 @@
 <resources>
-    <string name="my_web_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com</string>
 
     <string name="app_name">AMA</string>
     <string name="welcome">Welcome</string>
@@ -40,4 +40,8 @@
     <string name="read">Read</string>
     <string name="answer">Answer</string>
     <string name="your_answer">Your Answer</string>
+    <string name="user_info_format" translatable="false">%s, %s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ListDeserializer<T extends Entity> implements Function<DatabaseResource, List<T>> {
 
-    final Class<T> myClass;
+    private final Class<T> myClass;
 
     public ListDeserializer(Class<T> myClass) {
         this.myClass = myClass;
@@ -18,7 +18,8 @@ public class ListDeserializer<T extends Entity> implements Function<DatabaseReso
 
     @Override
     public List<T> apply(DatabaseResource databaseResource) {
-        DataSnapshot dataSnapshot = databaseResource.data;
+        // TODO: handle error cases
+        DataSnapshot dataSnapshot = databaseResource.getData();
         if (dataSnapshot == null) return null;
         List<T> list = new ArrayList<>((int) dataSnapshot.getChildrenCount());
         for (DataSnapshot childSnapShot : dataSnapshot.getChildren()) {

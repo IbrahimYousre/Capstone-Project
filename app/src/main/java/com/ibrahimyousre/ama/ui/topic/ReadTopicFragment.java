@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.adapters.AnswersAdapter;
 import com.ibrahimyousre.ama.data.model.Answer;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class ReadTopicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_read_topic, container, false);
         ButterKnife.bind(this, view);
-        adapter = new AnswersAdapter();
+        adapter = new AnswersAdapter(AnswersAdapter.QUESTION_AND_USER_INFO_INCLUDED);
         recyclerView.setAdapter(adapter);
         return view;
     }

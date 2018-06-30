@@ -1,8 +1,11 @@
-package com.ibrahimyousre.ama.ui.login;
+package com.ibrahimyousre.ama.ui.auth;
 
+import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -22,8 +25,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ibrahimyousre.ama.MainActivity;
+import com.ibrahimyousre.ama.MyApplication;
 import com.ibrahimyousre.ama.R;
-import com.ibrahimyousre.ama.ui.signup.SignUpActivity;
+import com.ibrahimyousre.ama.data.Repository;
+import com.ibrahimyousre.ama.data.model.User;
 import com.ibrahimyousre.ama.util.ActivityUtils;
 
 import butterknife.BindView;
@@ -32,10 +37,9 @@ import butterknife.OnClick;
 
 import static com.ibrahimyousre.ama.util.Constants.EMAIL_PATTERN;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
     private static final int RC_GOOGLE_SIGN_IN = 101;
-    private static final int RC_SIGN_UP = 102;
 
     @BindView(R.id.email_txt)
     EditText emailEditText;
@@ -64,20 +68,22 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.my_web_client_id))
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
+    protected void onResume() {
+        super.onResume();
+        mAuth.addAuthStateListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAuth.removeAuthStateListener(this);
     }
 
     private boolean isValidInput(String email, String password) {
@@ -112,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.signup_btn)
     void onSignUpClicked() {
         Intent signUpIntent = new Intent(this, SignUpActivity.class);
-        startActivityForResult(signUpIntent, RC_SIGN_UP);
+        startActivity(signUpIntent);
     }
 
     @OnClick(R.id.google_btn)
@@ -123,8 +129,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_GOOGLE_SIGN_IN && resultCode == RESULT_OK) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -133,11 +137,9 @@ public class LoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == RC_SIGN_UP && resultCode == RESULT_OK) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            return;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -149,10 +151,7 @@ public class LoginActivity extends AppCompatActivity {
     private final OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            } else {
+            if (!task.isSuccessful()) {
                 Toast.makeText(LoginActivity.this,
                         R.string.authentication_error,
                         Toast.LENGTH_SHORT).show();
@@ -160,4 +159,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            final ProgressDialog dialog = ProgressDialog.show(this, "", "LOADING...");
+            Repository.getInstance().getUserById(mAuth.getUid()).observe(this, new Observer<User>() {
+                @Override
+                public void onChanged(@Nullable User user) {
+                    if (user == null) return;
+                    MyApplication.setCurrentUser(user);
+                    dialog.dismiss();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+            });
+        }
+    }
 }

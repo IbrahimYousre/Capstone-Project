@@ -12,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.data.model.Topic;
 import com.ibrahimyousre.ama.ui.ask.AskActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 
 public class TopicActivity extends AppCompatActivity {
 
@@ -25,11 +28,7 @@ public class TopicActivity extends AppCompatActivity {
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
-    public static final String EXTRA_TOPIC_UID = "topic_id";
-    public static final String EXTRA_TOPIC_NAME = "topic_name";
-
-    private String topicId;
-    private String topicName;
+    private Topic topic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +36,9 @@ public class TopicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_topic);
         ButterKnife.bind(this);
 
-        topicId = getIntent().getStringExtra(EXTRA_TOPIC_UID);
-        topicName = getIntent().getStringExtra(EXTRA_TOPIC_NAME);
+        topic = (Topic) getIntent().getSerializableExtra(EXTRA_TOPIC);
 
-        getSupportActionBar().setTitle(topicName);
+        getSupportActionBar().setTitle(topic.getName());
         getSupportActionBar().setElevation(0);
 
         MyFragmentPagerAdapter pagerAdapter =
@@ -59,8 +57,7 @@ public class TopicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_ask) {
             Intent intent = new Intent(this, AskActivity.class);
-            intent.putExtra(EXTRA_TOPIC_UID, topicId);
-            intent.putExtra(EXTRA_TOPIC_NAME, topicName);
+            intent.putExtra(EXTRA_TOPIC, topic);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -75,9 +72,9 @@ public class TopicActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return ReadTopicFragment.getInstance(topicId);
+                return ReadTopicFragment.getInstance(topic.getUid());
             } else if (position == 1) {
-                return AnswerTopicFragment.getInstance(topicId);
+                return AnswerTopicFragment.getInstance(topic.getUid());
             }
             return null;
         }

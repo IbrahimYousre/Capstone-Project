@@ -5,7 +5,7 @@ public final class DatabaseConstants {
     // collections
     public static final String PATH_USERS = "users";
     public static final String PATH_TOPICS = "topics";
-    public static final String PATH_USERS_TOPICS = "users_topics";
+    public static final String PATH_USER_TOPICS = "user_topics";
     public static final String PATH_QUESTIONS = "questions";
     public static final String PATH_ANSWERS = "answers";
 
