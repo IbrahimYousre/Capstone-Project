@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Question;
 import com.ibrahimyousre.ama.data.model.Topic;
-import com.ibrahimyousre.ama.ui.topics.TopicsViewModel;
+import com.ibrahimyousre.ama.ui.main.topics.TopicsViewModel;
 
 import java.util.List;
 
@@ -78,8 +79,17 @@ public class AskActivity extends AppCompatActivity
                 }
             }
         });
-
         setupView();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupView() {

@@ -39,7 +39,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
 
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     implementation "com.google.firebase:firebase-core:16.0.1"

@@ -45,7 +45,6 @@ public class TopicsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-
         MyFragmentPagerAdapter pagerAdapter =
                 new MyFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -60,9 +59,9 @@ public class TopicsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == 1) {
                 return TopicListFragment.getUserTopicsInstance(mAuth.getUid());
-            } else if (position == 1) {
+            } else if (position == 0) {
                 return TopicListFragment.getAllTopicsInstance(mAuth.getUid());
             }
             return null;
@@ -76,9 +75,9 @@ public class TopicsFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
-                    return getString(R.string.my_topics);
                 case 1:
+                    return getString(R.string.my_topics);
+                case 0:
                     return getString(R.string.all_topics);
             }
             return null;

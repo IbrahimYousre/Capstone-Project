@@ -1,6 +1,6 @@
 package com.ibrahimyousre.ama.adapters;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +14,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Answer;
+import com.ibrahimyousre.ama.data.model.Question;
 
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerViewHolder> {
 
@@ -28,8 +33,20 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
 
     private List<Answer> answers;
     private int type;
+    private AnswerCallbacks mAnswerCallbacks;
 
-    public AnswersAdapter(int type) {
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+
+    public interface AnswerCallbacks {
+        void onQuestionClicked(Question question);
+
+        void onUserClicked(String userId);
+
+        void onAnswerClicked(Answer answer);
+    }
+
+    public AnswersAdapter(AnswerCallbacks mAnswerCallbacks, int type) {
+        this.mAnswerCallbacks = mAnswerCallbacks;
         this.type = type;
     }
 
@@ -41,16 +58,22 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
         return new AnswerViewHolder(view, type);
     }
 
-    // TODO: user correct time stamp and remove SupressLint
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Answer answer = answers.get(position);
         holder.questionTextView.setText(answer.getQuestionBody());
-        String userInfo = holder.itemView.getContext()
-                .getString(R.string.user_info_format, answer.getUserName(), answer.getUserTitle());
+        String userInfo = context.getString(R.string.user_info_format, answer.getUserName(), answer.getUserTitle());
         holder.userTextView.setText(userInfo);
-        holder.timeTextView.setText("Answered 26 Apr 2017");
+        Date date;
+        if (answer.getTimestamp() == 0) {
+            date = new Date();
+        } else {
+            date = new Date(answer.getTimestamp());
+        }
+        holder.timeTextView.setText(
+                context.getString(R.string.answer_timestamp_format,
+                        dateFormat.format(date)));
         holder.answerTextView.setText(answer.getText());
         Glide.with(holder.itemView).load(answer.getUserPhotoUrl())
                 .apply(RequestOptions.circleCropTransform())
@@ -63,6 +86,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
     }
 
     public void setAnswers(List<Answer> answers) {
+        Collections.reverse(answers);
         this.answers = answers;
     }
 
@@ -99,6 +123,30 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
                 case QUESTION_AND_USER_INFO_INCLUDED:
                     break;
             }
+
+            int refIds[] = userInfoGroup.getReferencedIds();
+            for (int id : refIds) {
+                itemView.findViewById(id).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Answer answer = answers.get(getAdapterPosition());
+                        mAnswerCallbacks.onUserClicked(answer.getUserId());
+                    }
+                });
+            }
+        }
+
+        @OnClick(R.id.question_txt)
+        void questionClicked() {
+            Answer answer = answers.get(getAdapterPosition());
+            Question question = new Question(answer);
+            mAnswerCallbacks.onQuestionClicked(question);
+        }
+
+        @OnClick(R.id.answer_txt)
+        void answerClicked() {
+            Answer answer = answers.get(getAdapterPosition());
+            mAnswerCallbacks.onAnswerClicked(answer);
         }
     }
 }

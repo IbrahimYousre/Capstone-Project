@@ -14,13 +14,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ibrahimyousre.ama.ui.auth.LoginActivity;
+import com.ibrahimyousre.ama.ui.main.feed.FeedFragment;
+import com.ibrahimyousre.ama.ui.main.notification.NotificationsFragment;
+import com.ibrahimyousre.ama.ui.main.profile.ProfileFragment;
 import com.ibrahimyousre.ama.ui.main.topics.TopicsFragment;
 import com.ibrahimyousre.ama.util.BottomNavigationViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProfileFragment.OnSignoutClickListender {
 
     @BindView(R.id.bottomNavigation)
     BottomNavigationView bottomNavigationView;
@@ -49,7 +52,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setupBottomNavigationView();
+        bottomNavigationView.setSelectedItemId(R.id.feed);
     }
+
+    Fragment mfeedFragment;
+    Fragment mTopicsFragment;
+    Fragment mNotificationsFragment;
+    Fragment mProfileFragment;
 
     private void setupBottomNavigationView() {
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -58,18 +67,30 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.feed:
-                    case R.id.notifications:
+                        if (mfeedFragment == null) mfeedFragment = new FeedFragment();
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, new Fragment())
+                                .replace(R.id.container, mfeedFragment)
                                 .commit();
                         break;
                     case R.id.topics:
+                        if (mTopicsFragment == null) mTopicsFragment = new TopicsFragment();
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, new TopicsFragment())
+                                .replace(R.id.container, mTopicsFragment)
+                                .commit();
+                        break;
+                    case R.id.notifications:
+                        if (mNotificationsFragment == null)
+                            mNotificationsFragment = new NotificationsFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, mNotificationsFragment)
                                 .commit();
                         break;
                     case R.id.profile:
-                        signOut();
+                        if (mProfileFragment == null)
+                            mProfileFragment = ProfileFragment.getInstance(mAuth.getUid());
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, mProfileFragment)
+                                .commit();
                         break;
                 }
                 return true;
@@ -77,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void signOut() {
+    @Override
+    public void signout() {
         mAuth.signOut();
         mGoogleSignInClient.signOut();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));

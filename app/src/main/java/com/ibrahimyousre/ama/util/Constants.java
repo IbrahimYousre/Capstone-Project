@@ -6,7 +6,8 @@ public final class Constants {
             "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
 
     public static final String EXTRA_QUESTION = "question";
-    public static final String EXTRA_ANSWER = "answer";
+    public static final String EXTRA_ANSWER_ID = "answer";
     public static final String EXTRA_TOPIC = "topic";
+    public static final String EXTRA_USER_ID = "user_id";
 
 }

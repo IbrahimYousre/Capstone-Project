@@ -9,6 +9,13 @@ public class User extends Entity {
     public User() {
     }
 
+    public User(User user) {
+        this.uid = user.uid;
+        this.name = user.name;
+        this.title = user.title;
+        this.photoUrl = user.photoUrl;
+    }
+
     public String getName() {
         return name;
     }

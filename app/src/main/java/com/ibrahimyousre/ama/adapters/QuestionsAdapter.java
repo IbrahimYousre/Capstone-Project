@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Question;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,6 +24,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
     public interface OnAnswerQuestionClickListender {
         void onAnswerQuestionClicked(Question question);
+
+        void onFollowQuestion(Question question);
     }
 
     public QuestionsAdapter(@NonNull OnAnswerQuestionClickListender answerQuestionClickListender) {
@@ -49,6 +52,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
     }
 
     public void setQuestions(List<Question> questions) {
+        Collections.reverse(questions);
         this.questions = questions;
     }
 
@@ -65,6 +69,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         @OnClick(R.id.answer_btn)
         void answer() {
             answerQuestionClickListender.onAnswerQuestionClicked(questions.get(getAdapterPosition()));
+        }
+
+        @OnClick(R.id.follow_btn)
+        void follow() {
+            answerQuestionClickListender.onFollowQuestion(questions.get(getAdapterPosition()));
         }
     }
 }

@@ -21,6 +21,13 @@ public class Question extends Entity {
         this.body = body;
     }
 
+    public Question(Answer answer) {
+        this.setUid(answer.getQuestionId());
+        this.setBody(answer.getQuestionBody());
+        this.setTopicName(answer.getTopicName());
+        this.setTopicId(answer.getTopicId());
+    }
+
     public String getTopicId() {
         return topicId;
     }
