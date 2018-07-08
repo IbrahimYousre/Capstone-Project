@@ -33,7 +33,7 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     private static final String SHOW_USER_TOPICS = "user";
     private static final String KEY_USER_UID = "user_uid";
 
-    @BindView(R.id.topic_rv)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
     @BindView(R.id.swipe_refresh)

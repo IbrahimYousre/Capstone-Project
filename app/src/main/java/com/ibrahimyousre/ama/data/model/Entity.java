@@ -7,7 +7,7 @@ import java.io.Serializable;
 public abstract class Entity implements Serializable {
 
     @Exclude
-    String uid;
+    protected String uid;
 
     public String getUid() {
         return uid;

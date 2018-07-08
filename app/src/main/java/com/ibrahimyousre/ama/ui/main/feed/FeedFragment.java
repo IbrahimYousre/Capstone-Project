@@ -1,4 +1,5 @@
-package com.ibrahimyousre.ama.ui.topic;
+package com.ibrahimyousre.ama.ui.main.feed;
+
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -6,18 +7,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.ibrahimyousre.ama.R;
-import com.ibrahimyousre.ama.adapters.AnswersAdapter;
+import com.ibrahimyousre.ama.adapters.FeedAdapter;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
+import com.ibrahimyousre.ama.data.model.Topic;
+import com.ibrahimyousre.ama.ui.ask.AskActivity;
 import com.ibrahimyousre.ama.ui.profile.ProfileActivity;
 import com.ibrahimyousre.ama.ui.questions.QuestionActivity;
+import com.ibrahimyousre.ama.ui.topic.TopicActivity;
 
 import java.util.List;
 
@@ -26,71 +33,65 @@ import butterknife.ButterKnife;
 
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_ANSWER_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
 
-public class ReadTopicFragment extends Fragment implements AnswersAdapter.AnswerCallbacks {
+public class FeedFragment extends Fragment implements FeedAdapter.FeedCallbacks {
 
-    public static final String KEY_TOPIC_UID = "topic_id";
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefreshLayout;
+    FeedViewModel feedViewModel;
+    FeedAdapter adapter;
 
-    private String topicId;
-
-    TopicViewModel topicViewModel;
-
-    AnswersAdapter adapter;
-
-    public ReadTopicFragment() {
-    }
-
-    public static Fragment getInstance(String topicId) {
-        Fragment fragment = new ReadTopicFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_TOPIC_UID, topicId);
-        fragment.setArguments(bundle);
-        return fragment;
+    public FeedFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_read_topic, container, false);
-        ButterKnife.bind(this, view);
-        adapter = new AnswersAdapter(this, AnswersAdapter.QUESTION_AND_USER_INFO_INCLUDED);
+        View root = inflater.inflate(R.layout.fragment_feed, container, false);
+        ButterKnife.bind(this, root);
+        toolbar.setTitle(R.string.navigation_feed);
+        toolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        toolbar.inflateMenu(R.menu.ask);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_ask) {
+                    Intent intent = new Intent(getActivity(), AskActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+        adapter = new FeedAdapter(this);
         recyclerView.setAdapter(adapter);
-        return view;
+        return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        topicId = getArguments().getString(KEY_TOPIC_UID);
-        topicViewModel = ViewModelProviders.of(getActivity()).get(TopicViewModel.class);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
-        refresh();
-    }
-
-    private void refresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        topicViewModel.getAnswersByTopic(topicId).observe(this, new Observer<List<Answer>>() {
+        feedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
+        feedViewModel.getUserFeed(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<List<Answer>>() {
             @Override
             public void onChanged(@Nullable List<Answer> answers) {
                 adapter.setAnswers(answers);
                 adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
+    @Override
+    public void onExploreTopic(Topic topic) {
+        Intent intent = new Intent(getContext(), TopicActivity.class);
+        intent.putExtra(EXTRA_TOPIC, topic);
+        startActivity(intent);
+    }
 
     @Override
     public void onQuestionClicked(Question question) {

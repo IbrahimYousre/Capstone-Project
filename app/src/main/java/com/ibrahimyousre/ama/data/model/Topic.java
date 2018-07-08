@@ -11,6 +11,11 @@ public class Topic extends Entity {
         this.name = name;
     }
 
+    public Topic(Answer answer) {
+        this.name = answer.topicName;
+        this.uid = answer.topicId;
+    }
+
     public String getName() {
         return name;
     }

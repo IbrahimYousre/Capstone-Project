@@ -24,8 +24,8 @@
     <string name="camera_icon_content_description">Camera Icon</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
-    <string name="all_topics">All Topics</string>
-    <string name="my_topics">My Topics</string>
+    <string name="all_topics">All</string>
+    <string name="my_topics">Following</string>
     <string name="ask">Ask</string>
     <string name="character_counter_format" translatable="false">%d/%d</string>
     <string name="topic">Topic</string>
@@ -37,11 +37,14 @@
     <string name="navigation_topics">Topics</string>
     <string name="navigation_notifications">Notifications</string>
     <string name="navigation_me">Me</string>
-    <string name="read">Read</string>
-    <string name="answer">Answer</string>
+    <string name="read">Answers</string>
+    <string name="answer">Questions</string>
     <string name="your_answer">Your Answer</string>
     <string name="user_info_format" translatable="false">%s, %s</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="answer_timestamp_format">Answered %s</string>
+    <string name="notification_format">%s answered your question</string>
+    <string name="notifications">Notifications</string>
+    <string name="title">Title</string>
+    <string name="user_name">User Name</string>
+    <string name="explore">Explore</string>
 </resources>

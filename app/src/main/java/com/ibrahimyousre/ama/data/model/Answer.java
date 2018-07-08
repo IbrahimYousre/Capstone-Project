@@ -17,7 +17,7 @@ public class Answer extends Entity {
     String userPhotoUrl;
 
     String text;
-    long timeStamp;
+    long timestamp;
     int upvotesCount;
 
     public Answer() {
@@ -110,8 +110,8 @@ public class Answer extends Entity {
         this.text = text;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public int getUpvotesCount() {

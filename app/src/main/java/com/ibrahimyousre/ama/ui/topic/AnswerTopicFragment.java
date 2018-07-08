@@ -28,7 +28,7 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
 
     public static final String KEY_TOPIC_UID = "topic_id";
 
-    @BindView(R.id.topic_rv)
+    @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
     @BindView(R.id.swipe_refresh)
@@ -66,11 +66,23 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
         super.onActivityCreated(savedInstanceState);
         topicId = getArguments().getString(KEY_TOPIC_UID);
         topicViewModel = ViewModelProviders.of(getActivity()).get(TopicViewModel.class);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+        refresh();
+    }
+
+    private void refresh() {
+        swipeRefreshLayout.setRefreshing(true);
         topicViewModel.getQuestionsByTopic(topicId).observe(this, new Observer<List<Question>>() {
             @Override
             public void onChanged(@Nullable List<Question> questions) {
                 adapter.setQuestions(questions);
                 adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -80,5 +92,9 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
         Intent intent = new Intent(getActivity(), AnswerActivity.class);
         intent.putExtra(EXTRA_QUESTION, question);
         startActivity(intent);
+    }
+
+    @Override
+    public void onFollowQuestion(Question question) {
     }
 }

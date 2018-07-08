@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ibrahimyousre.ama.MainActivity;
-import com.ibrahimyousre.ama.MyApplication;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.Repository;
 import com.ibrahimyousre.ama.data.model.User;
@@ -169,7 +168,6 @@ public class LoginActivity extends AppCompatActivity implements FirebaseAuth.Aut
                 @Override
                 public void onChanged(@Nullable User user) {
                     if (user == null) return;
-                    MyApplication.setCurrentUser(user);
                     dialog.dismiss();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();

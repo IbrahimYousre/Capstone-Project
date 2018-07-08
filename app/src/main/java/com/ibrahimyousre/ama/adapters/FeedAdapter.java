@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
+import com.ibrahimyousre.ama.data.model.Topic;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -25,43 +26,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerViewHolder> {
-
-    public static final int QUESTION_NO_USER_INFO_INCLUDED = 1;
-    public static final int NO_QUESTION_USER_INFO_INCLUDED = 2;
-    public static final int QUESTION_AND_USER_INFO_INCLUDED = 3;
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.AnswerViewHolder> {
 
     private List<Answer> answers;
-    private int type;
-    private AnswerCallbacks mAnswerCallbacks;
+    private FeedCallbacks mFeedCallbacks;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
-    public interface AnswerCallbacks {
+    public interface FeedCallbacks {
         void onQuestionClicked(Question question);
 
         void onUserClicked(String userId);
 
         void onAnswerClicked(Answer answer);
+
+        void onExploreTopic(Topic topic);
     }
 
-    public AnswersAdapter(AnswerCallbacks mAnswerCallbacks, int type) {
-        this.mAnswerCallbacks = mAnswerCallbacks;
-        this.type = type;
+    public FeedAdapter(FeedCallbacks mFeedCallbacks) {
+        this.mFeedCallbacks = mFeedCallbacks;
     }
 
     @NonNull
     @Override
     public AnswerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_answer, parent, false);
-        return new AnswerViewHolder(view, type);
+                .inflate(R.layout.item_feed, parent, false);
+        return new AnswerViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         Answer answer = answers.get(position);
+        holder.topicTextView.setText(answer.getTopicName());
         holder.questionTextView.setText(answer.getQuestionBody());
         String userInfo = context.getString(R.string.user_info_format, answer.getUserName(), answer.getUserTitle());
         holder.userTextView.setText(userInfo);
@@ -110,19 +108,12 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
         @BindView(R.id.user_info)
         Group userInfoGroup;
 
-        AnswerViewHolder(View itemView, int type) {
+        @BindView(R.id.topic_txt)
+        TextView topicTextView;
+
+        AnswerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            switch (type) {
-                case QUESTION_NO_USER_INFO_INCLUDED:
-                    userInfoGroup.setVisibility(View.GONE);
-                    break;
-                case NO_QUESTION_USER_INFO_INCLUDED:
-                    questionTextView.setVisibility(View.GONE);
-                    break;
-                case QUESTION_AND_USER_INFO_INCLUDED:
-                    break;
-            }
 
             int refIds[] = userInfoGroup.getReferencedIds();
             for (int id : refIds) {
@@ -130,7 +121,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
                     @Override
                     public void onClick(View view) {
                         Answer answer = answers.get(getAdapterPosition());
-                        mAnswerCallbacks.onUserClicked(answer.getUserId());
+                        mFeedCallbacks.onUserClicked(answer.getUserId());
                     }
                 });
             }
@@ -140,13 +131,25 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
         void questionClicked() {
             Answer answer = answers.get(getAdapterPosition());
             Question question = new Question(answer);
-            mAnswerCallbacks.onQuestionClicked(question);
+            mFeedCallbacks.onQuestionClicked(question);
         }
 
         @OnClick(R.id.answer_txt)
         void answerClicked() {
             Answer answer = answers.get(getAdapterPosition());
-            mAnswerCallbacks.onAnswerClicked(answer);
+            mFeedCallbacks.onAnswerClicked(answer);
+        }
+
+        @OnClick(R.id.explore_btn)
+        void exploreClicked() {
+            Topic topic = new Topic(answers.get(getAdapterPosition()));
+            mFeedCallbacks.onExploreTopic(topic);
+        }
+
+        @OnClick(R.id.topic_txt)
+        void topicClicked() {
+            Topic topic = new Topic(answers.get(getAdapterPosition()));
+            mFeedCallbacks.onExploreTopic(topic);
         }
     }
 }

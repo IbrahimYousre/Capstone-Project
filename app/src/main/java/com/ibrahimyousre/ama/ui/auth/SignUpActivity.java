@@ -1,7 +1,9 @@
 package com.ibrahimyousre.ama.ui.auth;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -9,10 +11,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.data.Repository;
+import com.ibrahimyousre.ama.data.model.User;
 import com.ibrahimyousre.ama.util.ActivityUtils;
 
 import butterknife.BindView;
@@ -46,6 +51,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private boolean workInProgress = false;
+    private String name;
+    private String email;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +64,11 @@ public class SignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         // TODO: Signup show "already have account login"
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!workInProgress) super.onBackPressed();
     }
 
     private boolean isValidInput(String name, String email, String password) {
@@ -81,27 +96,49 @@ public class SignUpActivity extends AppCompatActivity {
 
     @OnClick(R.id.signup_btn)
     void signUpClicked() {
-        String name = userNameEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString();
+        name = userNameEditText.getText().toString().trim();
+        email = emailEditText.getText().toString().trim();
+        password = passwordEditText.getText().toString();
         if (isValidInput(name, email, password)) {
             ActivityUtils.hideKeyboard(this);
             signUpButton.setEnabled(false);
+            workInProgress = true;
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, authCompleteListener);
         }
     }
 
+    private Observer<User> userObserver = new Observer<User>() {
+        boolean isRenaming = false;
+
+        @Override
+        public void onChanged(@Nullable User user) {
+            if (user == null) return;
+            else if (!isRenaming) {
+                isRenaming = true;
+                user.setName(name);
+                Repository.getInstance().updateUser(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        finish();
+                    }
+                });
+            }
+        }
+    };
+
     private final OnCompleteListener<AuthResult> authCompleteListener = new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
             if (task.isSuccessful()) {
-                finish();
+                Repository.getInstance().getUserById(mAuth.getUid()).observe(
+                        SignUpActivity.this, userObserver);
             } else {
                 Toast.makeText(SignUpActivity.this,
                         R.string.account_creation_error,
                         Toast.LENGTH_SHORT).show();
                 signUpButton.setEnabled(true);
+                workInProgress = false;
             }
         }
     };
