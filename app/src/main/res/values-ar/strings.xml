@@ -46,4 +46,7 @@
     <string name="user_name">إسم المستخدم</string>
     <string name="explore">إستكشف</string>
     <string name="edit">تعديل</string>
+    <string name="top_answers">أخر الاجابات</string>
+    <string name="feed_empty">لا يوجد إجابات</string>
+    <string name="widget_user_format">%s أجاب</string>
 </resources>
