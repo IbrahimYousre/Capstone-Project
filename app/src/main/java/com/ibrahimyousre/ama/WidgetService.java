@@ -145,6 +145,9 @@ public class WidgetService extends RemoteViewsService {
 
             Intent fillInIntent = new Intent();
             fillInIntent.putExtra(EXTRA_ANSWER_ID, answer.getUid());
+            // Note: check the documentation for the starange behavior of serialzizable extra with
+            // fill in intent the extra is not recieved in the activity so I had to send every
+            // field on its own :: so ugly
             fillInIntent.putExtra(EXTRA_QUESTION_ID, answer.getQuestionId());
             fillInIntent.putExtra(EXTRA_QUESTION_BODY, answer.getQuestionBody());
 
