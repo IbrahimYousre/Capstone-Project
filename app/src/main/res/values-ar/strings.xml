@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">إسالني</string>
+    <string name="welcome">مرحبا</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة السر</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="or">أو</string>
+    <string name="sign_up_with_email">أنشاء حساب جديد</string>
+    <string name="authentication_error">فشل تسجيل الدخول!</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="name">الإسم</string>
+    <string name="wrong_email_error">بريد إلكتروني غير صحيح!</string>
+    <string name="short_password_error">كلمة السر قصيرة جدا!</string>
+    <string name="empty_name_error">من فضلك ادخل الاسم</string>
+    <string name="account_creation_error">تعذر إنشاء حساب جديد</string>
+    <string name="topic_name">إسم الموضوع</string>
+    <string name="add_topic">أضف الموضوع</string>
+    <string name="topic_add_error">تعذر إضافة الموضوع</string>
+    <string name="topic_add_message">تم إضافة الموضوع بنجاح</string>
+    <string name="profile_picture_content_description">صورة المستخدم</string>
+    <string name="camera_icon_content_description">كاميرا</string>
+    <string name="follow">متابعة</string>
+    <string name="unfollow">الغاء المتابعة</string>
+    <string name="all_topics">الكل</string>
+    <string name="my_topics">متابعة</string>
+    <string name="ask">إسال</string>
+    <string name="character_counter_format" translatable="false">%d/%d</string>
+    <string name="topic">الموضوع</string>
+    <string name="click_to_select_topic">إضغط لإختار سؤال</string>
+    <string name="select_topic">إختيار سؤال</string>
+    <string name="your_question">سؤالك</string>
+    <string name="question_hint">كيف, ماذا, لماذا...؟</string>
+    <string name="navigation_feed">الرئيسية</string>
+    <string name="navigation_topics">الموضوعات</string>
+    <string name="navigation_notifications">إشعارات</string>
+    <string name="navigation_me">أنا</string>
+    <string name="read">الإجابات</string>
+    <string name="answer">الأسئلة</string>
+    <string name="your_answer">إجابتك</string>
+    <string name="user_info_format" translatable="false">%s, %s</string>
+    <string name="answer_timestamp_format">كتب %s</string>
+    <string name="notification_format">%s أجاب سؤالك</string>
+    <string name="title">الوصف</string>
+    <string name="user_name">إسم المستخدم</string>
+    <string name="explore">إستكشف</string>
+    <string name="edit">تعديل</string>
+</resources>

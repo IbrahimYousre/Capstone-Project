@@ -43,8 +43,8 @@
     <string name="user_info_format" translatable="false">%s, %s</string>
     <string name="answer_timestamp_format">Answered %s</string>
     <string name="notification_format">%s answered your question</string>
-    <string name="notifications">Notifications</string>
     <string name="title">Title</string>
     <string name="user_name">User Name</string>
     <string name="explore">Explore</string>
+    <string name="edit">Edit</string>
 </resources>

@@ -13,24 +13,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.auth.LoginActivity"
-            android:theme="@style/AppTheme.Login"
+            android:theme="@style/AppTheme.Auth"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".ui.auth.SignUpActivity"
-            android:theme="@style/AppTheme.Login"
+            android:theme="@style/AppTheme.Auth"
             android:windowSoftInputMode="stateHidden" />
+
+        <!-- TODO: only include in an admin version -->
         <activity
             android:name=".AddTopicActivity"
             android:label="@string/add_topic"
@@ -39,9 +43,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".ui.topic.TopicActivity"
             android:parentActivityName=".MainActivity">
@@ -49,24 +51,29 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".ui.questions.QuestionActivity" />
+
         <activity
             android:name=".ui.ask.AskActivity"
             android:label="@string/ask"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.answer.AnswerActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ui.questions.QuestionActivity" />
 
-        <receiver android:name=".FeedWidget" >
+        <receiver android:name=".FeedWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/feed_widget_info" />
         </receiver>
     </application>
-
 </manifest>

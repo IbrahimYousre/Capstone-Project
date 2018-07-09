@@ -49,7 +49,7 @@ public class NotificationsFragment extends Fragment
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         ButterKnife.bind(this, root);
-        toolbar.setTitle(R.string.notifications);
+        toolbar.setTitle(R.string.navigation_notifications);
         toolbar.setTitleTextColor(ContextCompat.getColor(getContext(), R.color.white));
         toolbar.inflateMenu(R.menu.ask);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

@@ -56,7 +56,6 @@ public class QuestionActivity extends AppCompatActivity implements AnswersAdapte
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         questionTextView.setText(question.getBody());
         adapter = new AnswersAdapter(this, AnswersAdapter.NO_QUESTION_USER_INFO_INCLUDED);

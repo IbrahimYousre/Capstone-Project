@@ -19,7 +19,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <ImageView
                     android:id="@+id/user_image"
                     android:layout_width="64dp"
@@ -28,8 +27,7 @@
                     android:contentDescription="@string/profile_picture_content_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/user_name"
@@ -70,6 +68,7 @@
                     android:id="@+id/camera_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/camera_icon_content_description"
                     app:layout_constraintBottom_toBottomOf="@+id/user_image"
                     app:layout_constraintEnd_toEndOf="@+id/user_image"
                     app:srcCompat="@drawable/ic_photo_camera_white_24dp" />
@@ -80,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
+                    android:contentDescription="@string/edit"
                     app:layout_constraintBottom_toBottomOf="@+id/user_name"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -93,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
+                    android:contentDescription="@string/edit"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/user_title"
                     app:layout_constraintEnd_toEndOf="parent"
