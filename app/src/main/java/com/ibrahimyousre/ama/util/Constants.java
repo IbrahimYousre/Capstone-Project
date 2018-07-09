@@ -10,4 +10,7 @@ public final class Constants {
     public static final String EXTRA_TOPIC = "topic";
     public static final String EXTRA_USER_ID = "user_id";
 
+    public static final String EXTRA_QUESTION_ID = "question_id";
+    public static final String EXTRA_QUESTION_BODY = "question_body";
+
 }
