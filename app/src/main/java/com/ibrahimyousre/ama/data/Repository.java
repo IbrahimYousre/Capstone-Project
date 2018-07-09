@@ -1,7 +1,10 @@
 package com.ibrahimyousre.ama.data;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
@@ -10,7 +13,10 @@ import com.ibrahimyousre.ama.data.model.Question;
 import com.ibrahimyousre.ama.data.model.Topic;
 import com.ibrahimyousre.ama.data.model.User;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.ibrahimyousre.ama.data.DatabaseConstants.FIELD_QUESTION_ID;
 import static com.ibrahimyousre.ama.data.DatabaseConstants.FIELD_TOPIC_ID;
@@ -33,6 +39,10 @@ public class Repository {
     private Repository() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseDatabase.setPersistenceEnabled(true);
+    }
+
+    public FirebaseDatabase getFirebaseDatabase() {
+        return firebaseDatabase;
     }
 
     public static Repository getInstance() {
@@ -148,5 +158,35 @@ public class Repository {
         FirebaseQueryLiveData answersLiveData = new FirebaseQueryLiveData(
                 firebaseDatabase.getReference(PATH_USER_NOTIFICATIONS).child(uid));
         return Transformations.map(answersLiveData, new ListDeserializer<>(Answer.class));
+    }
+
+    public LiveData<List<Answer>> getUserFeed(String uid) {
+        final MediatorLiveData<List<Answer>> userFeed = new MediatorLiveData<>();
+        final LiveData<List<Topic>> topicListLiveData = getUserTopics(uid);
+        userFeed.addSource(topicListLiveData, new Observer<List<Topic>>() {
+            @Override
+            public void onChanged(@Nullable List<Topic> topics) {
+                userFeed.removeSource(topicListLiveData);
+                final Set<String> userTopics = new HashSet<>();
+                for (Topic topic : topics) {
+                    userTopics.add(topic.getUid());
+                }
+                final LiveData<List<Answer>> answersLiveData = getAllAnswers();
+                userFeed.addSource(answersLiveData, new Observer<List<Answer>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Answer> answers) {
+                        userFeed.removeSource(answersLiveData);
+                        List<Answer> feed = new ArrayList<>();
+                        for (Answer a : answers) {
+                            if (userTopics.contains(a.getTopicId())) {
+                                feed.add(a);
+                            }
+                        }
+                        userFeed.setValue(feed);
+                    }
+                });
+            }
+        });
+        return userFeed;
     }
 }

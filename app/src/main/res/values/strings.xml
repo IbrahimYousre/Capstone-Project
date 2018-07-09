@@ -47,4 +47,7 @@
     <string name="user_name">User Name</string>
     <string name="explore">Explore</string>
     <string name="edit">Edit</string>
+    <string name="top_answers">Top Answers</string>
+    <string name="feed_empty">Empty feed</string>
+    <string name="widget_user_format">%s answered</string>
 </resources>

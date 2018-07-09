@@ -26,6 +26,8 @@ import timber.log.Timber;
 
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_ANSWER_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION_BODY;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
 
 public class QuestionActivity extends AppCompatActivity implements AnswersAdapter.AnswerCallbacks {
@@ -51,6 +53,11 @@ public class QuestionActivity extends AppCompatActivity implements AnswersAdapte
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
 
         question = (Question) getIntent().getSerializableExtra(EXTRA_QUESTION);
+        if (question == null) {
+            question = new Question();
+            question.setUid(getIntent().getStringExtra(EXTRA_QUESTION_ID));
+            question.setBody(getIntent().getStringExtra(EXTRA_QUESTION_BODY));
+        }
         answerId = getIntent().getStringExtra(EXTRA_ANSWER_ID);
 
         getSupportActionBar().setElevation(0);
@@ -79,7 +86,7 @@ public class QuestionActivity extends AppCompatActivity implements AnswersAdapte
                 }
                 adapter.setAnswers(answers);
                 adapter.notifyDataSetChanged();
-                recyclerView.scrollToPosition(adapterPosition);
+                recyclerView.scrollToPosition(answers.size() - 1 - adapterPosition);
             }
         });
     }
