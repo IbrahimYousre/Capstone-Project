@@ -18,19 +18,20 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Timber.plant(new CrashlyticsTree());
+        Timber.plant(new CrashlyticsTree(this));
     }
 
-    public class CrashlyticsTree extends Timber.DebugTree {
+    public static class CrashlyticsTree extends Timber.DebugTree {
         private static final String CRASHLYTICS_KEY_PRIORITY = "Priority";
         private static final String CRASHLYTICS_KEY_TAG = "Tag";
         private static final String CRASHLYTICS_KEY_MESSAGE = "Message";
 
-        CrashlyticsTree() {
+        CrashlyticsTree(Application application) {
             CrashlyticsCore core = new CrashlyticsCore.Builder()
                     .disabled(CRASHLYTICS_ENABLED)
                     .build();
-            Fabric.with(MyApplication.this, new Crashlytics.Builder().core(core).build());
+            Fabric.with(application,
+                    new Crashlytics.Builder().core(core).build());
         }
 
         @Override
@@ -45,15 +46,14 @@ public class MyApplication extends Application {
                 super.log(priority, tag, message, t);
             }
             if (CRASHLYTICS_ENABLED) {
-                if (priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO) {
+                if (priority < Log.WARN) {
                     return;
                 }
                 Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority);
                 Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag);
                 Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message);
-
                 if (t == null) {
-                    Crashlytics.logException(new Exception(message));
+                    Crashlytics.logException(new Throwable(message));
                 } else {
                     Crashlytics.logException(t);
                 }
