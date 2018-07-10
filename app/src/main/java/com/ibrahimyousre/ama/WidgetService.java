@@ -15,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ibrahimyousre.ama.data.Repository;
 import com.ibrahimyousre.ama.data.model.Answer;
-import com.ibrahimyousre.ama.data.model.Topic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,18 +84,11 @@ public class WidgetService extends RemoteViewsService {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     userTopics = new HashSet<>();
-                    List<Topic> topics = new ArrayList<>((int) dataSnapshot.getChildrenCount());
                     for (DataSnapshot childSnapShot : dataSnapshot.getChildren()) {
-                        Topic item = childSnapShot.getValue(Topic.class);
-                        item.setUid(childSnapShot.getKey());
-                        topics.add(item);
-                    }
-                    userTopics.clear();
-                    for (Topic topic : topics) {
-                        userTopics.add(topic.getUid());
+                        userTopics.add(childSnapShot.getKey());
                     }
                     firebaseDatabase.getReference(PATH_ANSWERS)
-                            .addListenerForSingleValueEvent(answersListener);
+                            .addValueEventListener(answersListener);
                 }
 
                 @Override
@@ -112,7 +104,7 @@ public class WidgetService extends RemoteViewsService {
                     if (firebaseAuth.getCurrentUser() != null) {
                         String uid = firebaseAuth.getUid();
                         firebaseDatabase.getReference(PATH_USER_TOPICS).child(uid)
-                                .addListenerForSingleValueEvent(topicListener);
+                                .addValueEventListener(topicListener);
                     } else {
                         feed.clear();
                         AppWidgetManager.getInstance(mContext)

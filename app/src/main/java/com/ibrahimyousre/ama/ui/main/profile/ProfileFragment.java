@@ -1,10 +1,14 @@
 package com.ibrahimyousre.ama.ui.main.profile;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ibrahimyousre.ama.R;
+import com.ibrahimyousre.ama.UploadProfilePictureService;
 import com.ibrahimyousre.ama.adapters.AnswersAdapter;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
@@ -27,19 +32,23 @@ import com.ibrahimyousre.ama.data.model.User;
 import com.ibrahimyousre.ama.ui.profile.EditTextDialogFragment;
 import com.ibrahimyousre.ama.ui.questions.QuestionActivity;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.ibrahimyousre.ama.ui.profile.EditTextDialogFragment.KEY_TEXT;
 import static com.ibrahimyousre.ama.ui.profile.EditTextDialogFragment.KEY_TITLE;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_ANSWER_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
+import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
 
 public class ProfileFragment extends Fragment
-        implements AnswersAdapter.AnswerCallbacks, EditTextDialogFragment.TextInputListener {
+        implements AnswersAdapter.AnswerCallbacks, EditTextDialogFragment.TextInputListener,
+        SelectImageDialogFragment.ImageSourceSelectListener {
 
     private final static String KEY_USER_ID = "user_id";
 
@@ -121,18 +130,19 @@ public class ProfileFragment extends Fragment
                         adapter.notifyDataSetChanged();
                     }
                 });
-        profileViewModel.getUserById(userId)
-                .observe(this, new Observer<User>() {
-                    @Override
-                    public void onChanged(@Nullable User user) {
-                        ProfileFragment.this.user = user;
-                        Glide.with(getActivity()).load(user.getPhotoUrl())
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(userImageView);
-                        userNameTextView.setText(user.getName());
-                        userTitleTextView.setText(user.getTitle());
-                    }
-                });
+        final LiveData<User> userLiveData = profileViewModel.getUserById(userId);
+        userLiveData.observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                userLiveData.removeObserver(this);
+                ProfileFragment.this.user = user;
+                Glide.with(getActivity()).load(user.getPhotoUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(userImageView);
+                userNameTextView.setText(user.getName());
+                userTitleTextView.setText(user.getTitle());
+            }
+        });
         setupNavigation();
         if (userId != FirebaseAuth.getInstance().getUid()) {
             editNameButton.setVisibility(View.GONE);
@@ -220,5 +230,51 @@ public class ProfileFragment extends Fragment
         intent.putExtra(EXTRA_QUESTION, new Question(answer));
         intent.putExtra(EXTRA_ANSWER_ID, answer.getUid());
         startActivity(intent);
+    }
+
+    @OnClick(R.id.user_image)
+    void selectImage() {
+        new SelectImageDialogFragment().show(getChildFragmentManager(), "select");
+    }
+
+    @Override
+    public void onCameraSelected() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onGallerySelected() {
+        Intent i = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, 101);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final Intent uploadIntent = new Intent(getContext(), UploadProfilePictureService.class);
+        uploadIntent.putExtra(EXTRA_USER_ID, userId);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            Glide.with(getActivity()).load(bitmap)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(userImageView);
+            uploadIntent.putExtra("data", bitmap);
+            getActivity().startService(uploadIntent);
+        } else if (requestCode == 101 && resultCode == RESULT_OK) {
+            Uri contentURI = data.getData();
+            uploadIntent.setData(contentURI);
+            getActivity().startService(uploadIntent);
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
+                Glide.with(getActivity()).load(bitmap)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(userImageView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

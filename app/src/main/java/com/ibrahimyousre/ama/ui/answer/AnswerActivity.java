@@ -81,7 +81,6 @@ public class AnswerActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AnswerActivity.this,
                                 R.string.message_answer_added_successfully, Toast.LENGTH_SHORT).show();
-                        notifyTheWidget();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -98,16 +97,6 @@ public class AnswerActivity extends AppCompatActivity {
         } else {
             submitWhenReady = true;
         }
-    }
-
-    // Still not working for some reason
-    private void notifyTheWidget() {
-        Intent intent = new Intent(this, FeedWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        int[] ids = AppWidgetManager.getInstance(this)
-                .getAppWidgetIds(new ComponentName(this, FeedWidget.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ids);
-        sendBroadcast(intent);
     }
 
     @Override

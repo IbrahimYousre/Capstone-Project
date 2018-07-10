@@ -56,7 +56,7 @@ public class Repository {
 
     public LiveData<User> getUserById(String uid) {
         FirebaseQueryLiveData userLiveData = new FirebaseQueryLiveData(
-                firebaseDatabase.getReference(PATH_USERS).child(uid));
+                firebaseDatabase.getReference(PATH_USERS).child(uid), true);
         return Transformations.map(userLiveData, new ItemDeserializer<>(User.class));
     }
 
