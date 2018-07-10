@@ -1,7 +1,10 @@
 package com.ibrahimyousre.ama.ui.answer;
 
+import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ibrahimyousre.ama.FeedWidget;
 import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
@@ -76,23 +80,34 @@ public class AnswerActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AnswerActivity.this,
-                                "Answer added successfully", Toast.LENGTH_SHORT).show();
+                                R.string.message_answer_added_successfully, Toast.LENGTH_SHORT).show();
+                        notifyTheWidget();
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(AnswerActivity.this,
-                                "Answer couldn't be added", Toast.LENGTH_SHORT).show();
+                                R.string.error_answer, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
                 Toast.makeText(this,
-                        "Please provide some answer!", Toast.LENGTH_SHORT).show();
+                        R.string.error_empty_answer, Toast.LENGTH_SHORT).show();
             }
         } else {
             submitWhenReady = true;
         }
+    }
+
+    // Still not working for some reason
+    private void notifyTheWidget() {
+        Intent intent = new Intent(this, FeedWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(this)
+                .getAppWidgetIds(new ComponentName(this, FeedWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ids);
+        sendBroadcast(intent);
     }
 
     @Override

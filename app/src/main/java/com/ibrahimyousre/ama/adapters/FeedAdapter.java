@@ -17,6 +17,7 @@ import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
 import com.ibrahimyousre.ama.data.model.Topic;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.AnswerViewHold
     private List<Answer> answers;
     private FeedCallbacks mFeedCallbacks;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+    private DateFormat dateFormat = SimpleDateFormat.getDateInstance();
 
     public interface FeedCallbacks {
         void onQuestionClicked(Question question);

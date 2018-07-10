@@ -32,13 +32,13 @@ public class EditTextDialogFragment extends DialogFragment {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity())
                 .setTitle(getArguments().getString(KEY_TITLE))
                 .setView(view)
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String text = editText.getText().toString();
                         mTextInputListener.onTextInput(text);
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditTextDialogFragment.this.dismiss();

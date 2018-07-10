@@ -20,10 +20,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="Jone Doe Answered" />
 
+        <!-- it was confusing since the data is not refreshed so often to save battery -->
         <TextView
             android:id="@+id/time_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             tools:text="5 min ago" />
     </LinearLayout>
 

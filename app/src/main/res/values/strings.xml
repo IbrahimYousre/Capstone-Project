@@ -50,4 +50,15 @@
     <string name="top_answers">Top Answers</string>
     <string name="feed_empty">Empty feed</string>
     <string name="widget_user_format">%s answered</string>
+    <string name="message_answer_added_successfully">Answer added successfully</string>
+    <string name="error_answer">Answer couldn\'t be added</string>
+    <string name="error_empty_answer">Please provide some answer!</string>
+    <string name="message_question_added_successfully">Question was added successfully</string>
+    <string name="error_question">Failed to add question, please check network, and try again</string>
+    <string name="error_empty_question">Question can\'t be empty!</string>
+    <string name="error_null_topic">Please select a topic!</string>
+    <string name="loading">LOADING...</string>
+    <string name="btn_answer">Answer</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
 </resources>

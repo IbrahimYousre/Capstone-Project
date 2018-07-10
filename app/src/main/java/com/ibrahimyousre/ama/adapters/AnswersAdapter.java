@@ -16,6 +16,7 @@ import com.ibrahimyousre.ama.R;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.data.model.Question;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.AnswerVi
     private int type;
     private AnswerCallbacks mAnswerCallbacks;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+    private DateFormat dateFormat = SimpleDateFormat.getDateInstance();
 
     public interface AnswerCallbacks {
         void onQuestionClicked(Question question);

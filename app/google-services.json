@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "794481543923-molir5vr9cleiqdvep65k31ch5gt49sh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ibrahimyousre.ama",
+            "certificate_hash": "9509773a0381dfba5798a10e5fbe0f90090dbc9e"
+          }
+        },
+        {
           "client_id": "794481543923-2qsvbsli9nr3inhtachlnq5hm3re9mpd.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -59,7 +59,11 @@ public class AskActivity extends AppCompatActivity
         setContentView(R.layout.activity_ask);
         ButterKnife.bind(this);
 
+
         selectedTopic = (Topic) getIntent().getSerializableExtra(EXTRA_TOPIC);
+        if (savedInstanceState != null) {
+            selectedTopic = (Topic) savedInstanceState.getSerializable(EXTRA_TOPIC);
+        }
         if (selectedTopic != null) {
             topicTextView.setText(selectedTopic.getName());
         }
@@ -83,6 +87,12 @@ public class AskActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_TOPIC, selectedTopic);
     }
 
     @Override
@@ -144,7 +154,7 @@ public class AskActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AskActivity.this,
-                                "Question was added successfuly",
+                                R.string.message_question_added_successfully,
                                 Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -152,14 +162,14 @@ public class AskActivity extends AppCompatActivity
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(AskActivity.this,
-                                "Failed to add question, please check network, and try again",
+                                R.string.error_question,
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
             } else
-                Toast.makeText(this, "Question can't be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_empty_question, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Please select a topic!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_null_topic, Toast.LENGTH_SHORT).show();
         }
     }
 

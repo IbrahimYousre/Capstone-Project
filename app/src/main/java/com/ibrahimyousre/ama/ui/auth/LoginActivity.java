@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements FirebaseAuth.Aut
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            final ProgressDialog dialog = ProgressDialog.show(this, "", "LOADING...");
+            final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loading));
             Repository.getInstance().getUserById(mAuth.getUid()).observe(this, new Observer<User>() {
                 @Override
                 public void onChanged(@Nullable User user) {
