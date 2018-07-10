@@ -15,14 +15,20 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways">
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/user_image"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_marginTop="16dp"
                     android:contentDescription="@string/profile_picture_content_description"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -103,12 +109,6 @@
                     app:srcCompat="@drawable/ic_edit_white_24dp" />
 
             </android.support.constraint.ConstraintLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                style="@style/AppTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
