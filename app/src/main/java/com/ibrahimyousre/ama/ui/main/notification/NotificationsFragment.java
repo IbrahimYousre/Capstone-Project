@@ -21,13 +21,10 @@ import com.ibrahimyousre.ama.adapters.NotificationsAdapter;
 import com.ibrahimyousre.ama.data.model.Answer;
 import com.ibrahimyousre.ama.ui.ask.AskActivity;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 
 public class NotificationsFragment extends Fragment
         implements NotificationsAdapter.AnswerClickListener {

@@ -107,7 +107,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Android"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintBaseline_toBaselineOf="@+id/explore_btn"
             app:layout_constraintStart_toStartOf="parent"

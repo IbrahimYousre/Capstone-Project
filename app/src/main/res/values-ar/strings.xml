@@ -30,7 +30,7 @@
     <string name="click_to_select_topic">إضغط لإختار الموضوع</string>
     <string name="select_topic">إختيار سؤال</string>
     <string name="your_question">سؤالك</string>
-    <string name="question_hint">كيف, ماذا, لماذا...؟</string>
+    <string name="question_hint">كيف, ماذا, لماذا…؟</string>
     <string name="navigation_feed">الرئيسية</string>
     <string name="navigation_topics">الموضوعات</string>
     <string name="navigation_notifications">إشعارات</string>
@@ -54,8 +54,10 @@
     <string name="error_question">فشلت العملية</string>
     <string name="error_empty_question">من فضلك قم بإدخال السؤال</string>
     <string name="error_null_topic">!من فضلك اختر الموضوع</string>
-    <string name="loading">جاري التحميل ...</string>
+    <string name="loading">جاري التحميل …</string>
     <string name="btn_answer">أجب</string>
     <string name="done">تم</string>
     <string name="cancel">إلغاء</string>
+    <string name="camera">التقاط صورة</string>
+    <string name="gallery">الصور المحفوظة</string>
 </resources>

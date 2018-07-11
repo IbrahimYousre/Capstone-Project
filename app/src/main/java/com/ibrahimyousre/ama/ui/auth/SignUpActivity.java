@@ -113,8 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         public void onChanged(@Nullable User user) {
-            if (user == null) return;
-            else if (!isRenaming) {
+            if (user != null && !isRenaming) {
                 isRenaming = true;
                 user.setName(name);
                 Repository.getInstance().updateUser(user).addOnSuccessListener(new OnSuccessListener<Void>() {

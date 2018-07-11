@@ -57,8 +57,10 @@
     <string name="error_question">Failed to add question, please check network, and try again</string>
     <string name="error_empty_question">Question can\'t be empty!</string>
     <string name="error_null_topic">Please select a topic!</string>
-    <string name="loading">LOADING...</string>
+    <string name="loading">LOADING…</string>
     <string name="btn_answer">Answer</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>
