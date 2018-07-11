@@ -22,6 +22,7 @@ import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 
 public class TopicActivity extends AppCompatActivity {
 
+    private static final String STATE_CURRENT_ITEM = "current_item";
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
@@ -51,6 +52,18 @@ public class TopicActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.ask, menu);
         return true;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        viewPager.setCurrentItem(savedInstanceState.getInt(STATE_CURRENT_ITEM));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_CURRENT_ITEM, viewPager.getCurrentItem());
     }
 
     @Override

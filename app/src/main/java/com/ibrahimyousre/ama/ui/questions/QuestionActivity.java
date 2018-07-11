@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION_BODY;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class QuestionActivity extends AppCompatActivity implements AnswersAdapter.AnswerCallbacks {
 
@@ -87,8 +89,27 @@ public class QuestionActivity extends AppCompatActivity implements AnswersAdapte
                 adapter.setAnswers(answers);
                 adapter.notifyDataSetChanged();
                 recyclerView.scrollToPosition(answers.size() - 1 - adapterPosition);
+                if (recyclerViewState != null) {
+                    recyclerView.getLayoutManager()
+                            .onRestoreInstanceState(recyclerViewState);
+                }
             }
         });
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     @Override

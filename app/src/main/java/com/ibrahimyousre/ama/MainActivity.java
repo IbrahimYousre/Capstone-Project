@@ -25,11 +25,13 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements ProfileFragment.OnSignoutClickListender {
 
+    private static final String STATE_SELECTED_ITEM = "selected_item";
     @BindView(R.id.bottomNavigation)
     BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
+    private int selectedItem = R.id.feed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,14 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.O
         }
 
         setupBottomNavigationView();
-        bottomNavigationView.setSelectedItemId(R.id.feed);
+        if (savedInstanceState == null)
+            bottomNavigationView.setSelectedItemId(selectedItem);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_ITEM, selectedItem);
     }
 
     Fragment mfeedFragment;
@@ -65,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.O
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
+                selectedItem = item.getItemId();
+                switch (selectedItem) {
                     case R.id.feed:
                         if (mfeedFragment == null) mfeedFragment = new FeedFragment();
                         getSupportFragmentManager().beginTransaction()

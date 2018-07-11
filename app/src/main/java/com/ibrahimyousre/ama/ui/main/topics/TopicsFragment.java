@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 public class TopicsFragment extends Fragment {
 
+    private static final String STATE_CURRENT_ITEM = "current_item";
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
@@ -49,6 +50,14 @@ public class TopicsFragment extends Fragment {
                 new MyFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        if (savedInstanceState != null)
+            viewPager.setCurrentItem(savedInstanceState.getInt(STATE_CURRENT_ITEM));
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_CURRENT_ITEM, viewPager.getCurrentItem());
     }
 
     class MyFragmentPagerAdapter extends FragmentPagerAdapter {

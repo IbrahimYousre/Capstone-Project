@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_ANSWER_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class ReadTopicFragment extends Fragment implements AnswersAdapter.AnswerCallbacks {
 
@@ -68,6 +70,8 @@ public class ReadTopicFragment extends Fragment implements AnswersAdapter.Answer
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
         topicId = getArguments().getString(KEY_TOPIC_UID);
         topicViewModel = ViewModelProviders.of(getActivity()).get(TopicViewModel.class);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,6 +91,10 @@ public class ReadTopicFragment extends Fragment implements AnswersAdapter.Answer
                 adapter.setAnswers(answers);
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
+                if (recyclerViewState != null) {
+                    recyclerView.getLayoutManager()
+                            .onRestoreInstanceState(recyclerViewState);
+                }
             }
         });
     }
@@ -112,5 +120,14 @@ public class ReadTopicFragment extends Fragment implements AnswersAdapter.Answer
         intent.putExtra(EXTRA_QUESTION, new Question(answer));
         intent.putExtra(EXTRA_ANSWER_ID, answer.getUid());
         startActivity(intent);
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

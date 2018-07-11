@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsProvider {
 
@@ -79,6 +81,9 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
+
         userUid = getArguments().getString(KEY_USER_UID);
 
         topicsViewModel = ViewModelProviders.of(getParentFragment()).get(TopicsViewModel.class);
@@ -99,6 +104,10 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
                     myTopicsUids.add(topic.getUid());
                 }
                 adapter.notifyDataSetChanged();
+                if (recyclerViewState != null) {
+                    recyclerView.getLayoutManager()
+                            .onRestoreInstanceState(recyclerViewState);
+                }
             }
         });
     }
@@ -145,5 +154,14 @@ public class TopicListFragment extends Fragment implements TopicsAdapter.TopicsP
     @Override
     public boolean isFollowingTopic(Topic topic) {
         return myTopicsUids != null && myTopicsUids.contains(topic.getUid());
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

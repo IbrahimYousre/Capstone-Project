@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +36,7 @@ import static com.ibrahimyousre.ama.util.Constants.EXTRA_ANSWER_ID;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_TOPIC;
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_USER_ID;
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class FeedFragment extends Fragment implements FeedAdapter.FeedCallbacks {
 
@@ -76,12 +78,18 @@ public class FeedFragment extends Fragment implements FeedAdapter.FeedCallbacks 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
         feedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
         feedViewModel.getUserFeed(FirebaseAuth.getInstance().getUid()).observe(this, new Observer<List<Answer>>() {
             @Override
             public void onChanged(@Nullable List<Answer> answers) {
                 adapter.setAnswers(answers);
                 adapter.notifyDataSetChanged();
+                if (recyclerViewState != null) {
+                    recyclerView.getLayoutManager()
+                            .onRestoreInstanceState(recyclerViewState);
+                }
             }
         });
     }
@@ -113,5 +121,14 @@ public class FeedFragment extends Fragment implements FeedAdapter.FeedCallbacks 
         intent.putExtra(EXTRA_QUESTION, new Question(answer));
         intent.putExtra(EXTRA_ANSWER_ID, answer.getUid());
         startActivity(intent);
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

@@ -13,4 +13,6 @@ public final class Constants {
     public static final String EXTRA_QUESTION_ID = "question_id";
     public static final String EXTRA_QUESTION_BODY = "question_body";
 
+    public static final String STATE_SCROLL_POSITION = "scroll_position";
+
 }

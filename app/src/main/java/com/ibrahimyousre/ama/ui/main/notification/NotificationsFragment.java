@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class NotificationsFragment extends Fragment
         implements NotificationsAdapter.AnswerClickListener {
@@ -67,6 +70,9 @@ public class NotificationsFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
+        }
         notificationViewModel = ViewModelProviders.of(this)
                 .get(NotificationViewModel.class);
         notificationViewModel.getNotificationsForUser(FirebaseAuth.getInstance().getUid())
@@ -75,6 +81,10 @@ public class NotificationsFragment extends Fragment
                     public void onChanged(@Nullable List<Answer> answers) {
                         adapter.setAnswers(answers);
                         adapter.notifyDataSetChanged();
+                        if (recyclerViewState != null) {
+                            recyclerView.getLayoutManager()
+                                    .onRestoreInstanceState(recyclerViewState);
+                        }
                     }
                 });
     }
@@ -82,5 +92,14 @@ public class NotificationsFragment extends Fragment
     @Override
     public void onAnswerClicked(Answer answer) {
 
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }

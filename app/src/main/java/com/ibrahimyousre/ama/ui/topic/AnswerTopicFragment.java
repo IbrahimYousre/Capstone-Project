@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.ibrahimyousre.ama.util.Constants.EXTRA_QUESTION;
+import static com.ibrahimyousre.ama.util.Constants.STATE_SCROLL_POSITION;
 
 public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.OnAnswerQuestionClickListender {
 
@@ -64,6 +66,8 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null)
+            recyclerViewState = savedInstanceState.getParcelable(STATE_SCROLL_POSITION);
         topicId = getArguments().getString(KEY_TOPIC_UID);
         topicViewModel = ViewModelProviders.of(getActivity()).get(TopicViewModel.class);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -83,6 +87,10 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
                 adapter.setQuestions(questions);
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
+                if (recyclerViewState != null) {
+                    recyclerView.getLayoutManager()
+                            .onRestoreInstanceState(recyclerViewState);
+                }
             }
         });
     }
@@ -96,5 +104,14 @@ public class AnswerTopicFragment extends Fragment implements QuestionsAdapter.On
 
     @Override
     public void onFollowQuestion(Question question) {
+    }
+
+    Parcelable recyclerViewState;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(STATE_SCROLL_POSITION,
+                recyclerView.getLayoutManager().onSaveInstanceState());
     }
 }
